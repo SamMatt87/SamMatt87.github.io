@@ -1,4 +1,4 @@
-## Welcome to GitHub Pages
+## Sam's Data Science Projects
 
 You can use the [editor on GitHub](https://github.com/SamMatt87/SamMatt87.github.io/edit/main/README.md) to maintain and preview the content for your website in Markdown files.
 
