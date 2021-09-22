@@ -13,6 +13,12 @@ My name is Sam Matthews, I am a 33 year old male currently living in Sydney, Aus
 - Presenting insights into data using tools such as Tableau, Qlik Sense and Power BI
 - Liasing with both technical and non-technical stakeholders about project requirements as well as any outcomes and insights
 
+Throughout my recent Master's I have been learning further skils to make the transition into a data science career. I have also been practicing and improving upon those skills through the various projects shown below. These skills included:
+- Using python to preprocess and explore massive datasets
+- Using models from the SciKitLearn Python module to create models based on various modelling techniques
+- Creating Neural Networks with Tensorflow and Pytorch
+- Comparing the outputs of different models to find the most suitable in terms of accuracy and understandablity
+
 You can use the [editor on GitHub](https://github.com/SamMatt87/SamMatt87.github.io/edit/main/README.md) to maintain and preview the content for your website in Markdown files.
 
 Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
