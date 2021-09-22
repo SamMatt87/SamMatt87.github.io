@@ -1,5 +1,13 @@
 ## Sam's Data Science Projects
 
+### Introduction
+
+I created this page to showcase my data science skills to potential employers. Below you will find a short introduction about me and links to pages about my personal data science projects broken down by category.
+
+### About Me
+
+My name is Sam Matthews, I am a 33 year old male currently living in Sydney, Australia. Having recently graduated from a Master's of Data Science with the University of New South Wales, I am looking to start my career as a Data Scientist.
+
 You can use the [editor on GitHub](https://github.com/SamMatt87/SamMatt87.github.io/edit/main/README.md) to maintain and preview the content for your website in Markdown files.
 
 Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
