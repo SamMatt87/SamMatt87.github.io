@@ -1,7 +1,7 @@
 ---
-layout: page
 title: "SciKitLearn_Basics"
-permalink: /ScikitLearn_Basics/
+layout: template
+filename: SciKitLearn_Basics.md
 ---
 
 Test 2
