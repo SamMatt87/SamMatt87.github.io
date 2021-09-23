@@ -1,10 +1,10 @@
-## Sam's Data Science Projects
+# Sam's Data Science Projects
 
-### Introduction
+## Introduction
 
 I created this page to showcase my data science skills to potential employers. Below you will find a short introduction about me and links to pages about my personal data science projects broken down by category.
 
-### About Me
+## About Me
 ![profile picture](https://user-images.githubusercontent.com/18587666/134286830-0491280b-4e79-45ed-9340-942bf1308e40.jpg)
 
 My name is Sam Matthews, I am a 33 year old male currently living in Sydney, Australia. Having recently graduated from a Master's of Data Science with the University of New South Wales, I am looking to start my career as a Data Scientist. I am no stranger to the world of data, over the last four and a half years I have worked as a Data Analyst for a number of Australia's largest companies and government organisations. My experience gained has given me skills in a number of areas including:
@@ -18,4 +18,20 @@ Throughout my recent Master's I have been learning further skils to make the tra
 - Using models from the SciKitLearn Python module to create models based on various modelling techniques
 - Creating Neural Networks with Tensorflow and Pytorch
 - Comparing the outputs of different models to find the most suitable in terms of accuracy and understandablity
+
+## Projects
+### Basic SciKitLearn Projects
+These are projects that I used to practice my skills in SciKitLearn models before I undertook my Masters degree.
+
+### Image Recognition Projects
+Image clssification tasks using various sklearn models and Neural Networks.
+
+### Natural Language Processing Projects
+Various Natural Language processing tasks using sklearn models and Neural Networks
+
+### Prediction Projects
+Projects used to predict outcomes such as customer churn or flight delays using various sklearn models
+
+### Fun With Python
+Just some fun projects showing off skills like web scraping
 
