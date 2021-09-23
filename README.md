@@ -20,7 +20,7 @@ Throughout my recent Master's I have been learning further skils to make the tra
 - Comparing the outputs of different models to find the most suitable in terms of accuracy and understandablity
 
 ## Projects
-### Basic SciKitLearn Projects
+### [Basic SciKitLearn Projects](https://sammatt87.github.io/SciKitLearn-basics/)
 These are projects that I used to practice my skills in SciKitLearn models before I undertook my Masters degree.
 
 ### Image Recognition Projects
