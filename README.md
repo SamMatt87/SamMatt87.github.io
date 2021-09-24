@@ -23,15 +23,15 @@ Throughout my recent Master's I have been learning further skils to make the tra
 ### [Basic SciKitLearn Projects](https://sammatt87.github.io/SciKitLearn-basics/)
 These are projects that I used to practice my skills in SciKitLearn models before I undertook my Masters degree.
 
-### Image Recognition Projects
+### [Image Recognition Projects](https://sammatt87.github.io/Image-Recognition/)
 Image clssification tasks using various sklearn models and Neural Networks.
 
-### Natural Language Processing Projects
+### [Natural Language Processing Projects](https://sammatt87.github.io/NLP/)
 Various Natural Language processing tasks using sklearn models and Neural Networks
 
-### Prediction Projects
+### [Prediction Projects](https://sammatt87.github.io/Prediction)
 Projects used to predict outcomes such as customer churn or flight delays using various sklearn models
 
-### Fun With Python
+### [Fun Python Projects](https://sammatt87.github.io/Fun)
 Just some fun projects showing off skills like web scraping
 
