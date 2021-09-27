@@ -5,7 +5,7 @@ permalink: /SciKitLearn-basics/
 ---
 
 ## SciKitLearn Basic projects
-### Hello world
+### [Hello world](https://sammatt87.github.io/SciKitLearn-basics/hello-world/)
 Multiple models run on the Titanic dataset, the hello world of data science
 
 ### What's Cookin
