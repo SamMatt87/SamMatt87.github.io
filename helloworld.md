@@ -23,3 +23,20 @@ import numpy
 import math
 import graphviz
 ```
+
+Next was the importing and preprocessing of the data. I imported the data from the csv, then created the X and Y datasets dropping the survived and any unique variables from the X data and only keeping survived for the Y data. I then ran two label encoders on the gender and embarked (which port the passengers joined the ship) variables. I also filled in the average age for any passengers where the age was missing. The data was then split into train and test sets in order to test the performance of the various models.
+
+```python
+passengers = pd.read_csv('train.csv')
+X=passengers.drop(['PassengerId','Survived','Name','Cabin','Ticket',],axis=1)
+Y=passengers['Survived']
+Label_Encoder = LabelEncoder()
+Label_Encoder2 = LabelEncoder()
+gender_encoded = Label_Encoder.fit_transform(X['Sex'])
+port_encoded = Label_Encoder2.fit_transform(X['Embarked'])
+X['Sex'] = gender_encoded
+X['Embarked'] = port_encoded
+X['Age']=X['Age'].fillna(X['Age'].mean())
+
+X_train, X_test, Y_train, Y_test = train_test_split(X,Y,test_size = 0.2)
+```
