@@ -34,4 +34,3 @@ Projects used to predict outcomes such as customer churn or flight delays using 
 
 ### [Fun Python Projects](https://sammatt87.github.io/Fun)
 Just some fun projects showing off skills like web scraping
-
