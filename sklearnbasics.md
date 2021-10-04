@@ -11,7 +11,7 @@ Multiple models run on the Titanic dataset, the hello world of data science
 ### [What's Cookin](https://sammatt87.github.io/SciKitLearn-basics/whats-cooking/)
 A decision tree model that attempts to predict the type of cuisine based on a list of ingredients
 
-### CC Fraud
+### [CC Fraud](https://sammatt87.github.io/SciKitLearn-basics/cc-fraud/)
 A logistic regression model that attempts to visualise credit card fraud
 
 ### Aus_rain
