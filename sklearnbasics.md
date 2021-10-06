@@ -14,7 +14,7 @@ A decision tree model that attempts to predict the type of cuisine based on a li
 ### [CC Fraud](https://sammatt87.github.io/SciKitLearn-basics/cc-fraud/)
 A logistic regression model that attempts to visualise credit card fraud
 
-### Aus_rain
+### [Aus_rain](https://sammatt87.github.io/SciKitLearn-basics/aus-rain/)
 A decision tree model that attempts to predict rainy days
 
 ### Tags
