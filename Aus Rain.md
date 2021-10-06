@@ -78,6 +78,9 @@ for edge in edges:
 graph.write_png('tree.png')
 ```
 
+![tree](https://user-images.githubusercontent.com/18587666/136124069-3c5fd18f-78df-4294-bf79-0666dfe15fd0.png)
+
+
 ## Improvements
 Some of the features that I changed to numeric variables like the month and the cardinal direction may have been improved by using one hot encoding instead. I also removed the location variable, dismissing it as not useful. However, some cities on the east coast of Australia receive more rain due to their proximity to both the coast and a mountain range. In the future, it may be useful to add variables like whether a location is on the coast or next to a mountain range to improve accuracy.
 
