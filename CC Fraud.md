@@ -9,6 +9,10 @@ This project used a logistic regression function to pinpoint frauduent credit ca
 ## The Dataset
 The dataset used for this project can be found on kaggle [here](https://www.kaggle.com/shubhamjoshi2130of/abstract-data-set-for-credit-card-fraud-detection). It includes fields such as the average transaction amount for the card, the amount for this transaction, whether the transaction was declined and whether it was a foreign transaction. You can see a sample of the data below.
 
+![image](https://user-images.githubusercontent.com/18587666/136120239-47379f31-514d-48f5-82be-7006e6d5a8d2.png)
+![image](https://user-images.githubusercontent.com/18587666/136120283-4d914010-e328-40ed-8d81-984bb0bc73d6.png)
+
+
 ## The Process
 The first step of the process was to import some python packages. I imported numpy for running calculatiions, pandas to import the data, pyplot from matplotlib to visualise the model and the logistic regression package from sklearn to build the model. I also imported the data and ran some checks by printing out the top 5 rows and counting the number of merchant ids.
 
