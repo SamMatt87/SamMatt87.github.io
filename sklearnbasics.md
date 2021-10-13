@@ -17,7 +17,7 @@ A logistic regression model that attempts to visualise credit card fraud
 ### [Aus_rain](https://sammatt87.github.io/SciKitLearn-basics/aus-rain/)
 A decision tree model that attempts to predict rainy days
 
-### Tags
+### [Tags](https://sammatt87.github.io/SciKitLearn-basics/tags/)
 An SVC that attempts to generate tags for programming questions
 
 ### Number Recognition
