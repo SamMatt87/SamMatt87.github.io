@@ -18,11 +18,11 @@ To see some of my personal projects, feel free to browse through the categories 
 
 ## Project categories
 
-### [Project by data source type]
+### [Project by data source type](https://sammatt87.github.io/Source_Type)
 Split by the data source such as web scraping, api and database
 
-### [Project by data type]
+### [Project by data type](https://sammatt87.github.io/Data_Type)
 Split by the type of input data such as text or images
 
-### [Project by model type]
+### [Project by model type](https://sammatt87.github.io/Model_Type)
 Split by the type of model used such as Decision Tree, KNN and Neural Networks
