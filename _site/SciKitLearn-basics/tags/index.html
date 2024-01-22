@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset='utf-8'>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="/assets/css/style.css?v=82f07e5e57fbe27d3cce2ad6bdf4dc8916d62145">
+    <link rel="stylesheet" type="text/css" href="/assets/css/print.css" media="print">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Tags | SamMatt87.github.io</title>
+<meta name="generator" content="Jekyll v3.9.3" />
+<meta property="og:title" content="Tags" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="A place to showcase my personal Data Science projects" />
+<meta property="og:description" content="A place to showcase my personal Data Science projects" />
+<link rel="canonical" href="http://localhost:4000/SciKitLearn-basics/tags/" />
+<meta property="og:url" content="http://localhost:4000/SciKitLearn-basics/tags/" />
+<meta property="og:site_name" content="SamMatt87.github.io" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Tags" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"A place to showcase my personal Data Science projects","headline":"Tags","url":"http://localhost:4000/SciKitLearn-basics/tags/"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup Google Analytics -->
+
+
+
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body>
+    <div id="container">
+      <div class="inner">
+
+        <header>
+          <h1>Tags</h1>
+          <h2>A place to showcase my personal Data Science projects</h2>
+        </header>
+        <section id="downloads" class="clearfix">
+          
+	
+        </section>
+        <hr>
+        <section id="main_content">
+          <h2 id="background">Background</h2>
+<p>This project used natural language processing to create a support vector classification model which uses the title for a stack overflow question to predict the tags it relates to. Both the title of the post and the associated tags in list form are provided in the dataset.</p>
+
+<h2 id="the-dataset">The Dataset</h2>
+<p>The dataset was sourced from kaggle <a href="https://www.kaggle.com/badalgupta/stack-overflow-tag-prediction">here</a>. The data contains 100,000 questions. There are two columns. The first column contains the title of the post on stack overflow as plain text. The second column contains the tags for the post, as a post can have multiple tags, the list of tags is contained within square parentheses, separated by commas and each tag is within quotation marks similar to how a list in python would appear when printed out. You can see a sample of the data below.</p>
+
+<h2 id="the-process">The Process</h2>
+<p>Some python packages were first installed. The poackages included pandas to extract the data, numpy to perform calculations on the data, BeautifulSoup to remove any html that might appear in the titles, the regular expression package re to remove any punctuation from the titles, nltk to remove commonly used words from the titles and from the sklearn package train_test_split to create the training and testing sets, CountVectorizer to count the occurence of words in the title, SVC to create the model and accuracy_score to asses the model’s accuracy.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="n">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="kn">from</span> <span class="nn">bs4</span> <span class="kn">import</span> <span class="n">BeautifulSoup</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">nltk</span>
+<span class="kn">from</span> <span class="nn">nltk.corpus</span> <span class="kn">import</span> <span class="n">stopwords</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+<span class="kn">from</span> <span class="nn">sklearn.feature_extraction.text</span> <span class="kn">import</span> <span class="n">CountVectorizer</span>
+<span class="kn">from</span> <span class="nn">sklearn.svm</span> <span class="kn">import</span> <span class="n">SVC</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">accuracy_score</span>
+</code></pre></div></div>
+
+<p>The next step was to import the data. I imported the data with pandas and ran some checks by returning the head of the dataframe and extracing the tags from the second row by takimg everything except the first and last character, then splitting on the commas and quote marks.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s">'train.csv'</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">data</span><span class="p">.</span><span class="n">head</span><span class="p">())</span>
+<span class="k">print</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s">'tags'</span><span class="p">][</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">].</span><span class="n">split</span><span class="p">(</span><span class="s">','</span><span class="p">)[</span><span class="mi">1</span><span class="p">].</span><span class="n">split</span><span class="p">(</span><span class="s">"'"</span><span class="p">)[</span><span class="mi">1</span><span class="p">])</span>
+</code></pre></div></div>
+
+<p>I then extracted the tags for each question in order to categorise the questions. I focused on four languages R, Python, Java and SQL. I created a new dataframe with the question and its tag.</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">code</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">question</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s">'tags'</span><span class="p">])):</span>
+	<span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s">'tags'</span><span class="p">][</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">].</span><span class="n">split</span><span class="p">(</span><span class="s">','</span><span class="p">))):</span>
+		<span class="n">x</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="s">'tags'</span><span class="p">][</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">].</span><span class="n">split</span><span class="p">(</span><span class="s">','</span><span class="p">)[</span><span class="n">j</span><span class="p">].</span><span class="n">split</span><span class="p">(</span><span class="s">"'"</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+		<span class="k">if</span> <span class="n">x</span><span class="p">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s">'r'</span><span class="p">:</span>
+			<span class="n">code</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="s">'R'</span><span class="p">)</span>
+			<span class="n">question</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s">'title'</span><span class="p">][</span><span class="n">i</span><span class="p">])</span>
+		<span class="k">elif</span> <span class="n">x</span><span class="p">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s">'python'</span><span class="p">:</span>
+			<span class="n">code</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="s">'Python'</span><span class="p">)</span>
+			<span class="n">question</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s">'title'</span><span class="p">][</span><span class="n">i</span><span class="p">])</span>
+		<span class="k">elif</span> <span class="n">x</span><span class="p">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s">'java'</span><span class="p">:</span>
+			<span class="n">code</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="s">'Java'</span><span class="p">)</span>
+			<span class="n">question</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s">'title'</span><span class="p">][</span><span class="n">i</span><span class="p">])</span>
+		<span class="k">elif</span> <span class="n">x</span><span class="p">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s">'mysql'</span><span class="p">:</span>
+			<span class="n">code</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="s">'sql'</span><span class="p">)</span>
+			<span class="n">question</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s">'title'</span><span class="p">][</span><span class="n">i</span><span class="p">])</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="n">code</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="s">'N/A'</span><span class="p">)</span>
+			<span class="n">question</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s">'title'</span><span class="p">][</span><span class="n">i</span><span class="p">])</span>
+<span class="c1">#print(code)
+#print(question)
+</span><span class="n">tagged</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s">'Question'</span><span class="p">:</span><span class="n">question</span><span class="p">,</span><span class="s">'Code'</span><span class="p">:</span><span class="n">code</span><span class="p">})</span>
+<span class="k">print</span><span class="p">(</span><span class="n">tagged</span><span class="p">.</span><span class="n">head</span><span class="p">())</span>
+</code></pre></div></div>
+
+<p>Next I wrote a function to clean the text in the titles. This involved using BeautifulSoup to remove any html tags, using re to replace any character that wasn’t a letter, making the entire text lower case, and removing any words that were in the nltk stopwords. I then removed any rows that were tagged with ‘N/A’ from the previous section.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">to_words</span><span class="p">(</span><span class="n">raw_text</span><span class="p">):</span>
+	<span class="n">text</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">raw_text</span><span class="p">,</span> <span class="n">features</span> <span class="o">=</span> <span class="s">"html.parser"</span><span class="p">).</span><span class="n">get_text</span><span class="p">()</span>
+	<span class="n">letters</span> <span class="o">=</span> <span class="n">re</span><span class="p">.</span><span class="n">sub</span><span class="p">(</span><span class="s">"[^a-zA-Z]"</span><span class="p">,</span><span class="s">" "</span><span class="p">,</span><span class="n">text</span><span class="p">)</span>
+	<span class="n">lower_case</span> <span class="o">=</span> <span class="n">letters</span><span class="p">.</span><span class="n">lower</span><span class="p">()</span>
+	<span class="n">words</span> <span class="o">=</span> <span class="n">lower_case</span><span class="p">.</span><span class="n">split</span><span class="p">()</span>
+	<span class="n">stops</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">stopwords</span><span class="p">.</span><span class="n">words</span><span class="p">(</span><span class="s">'english'</span><span class="p">))</span>
+	<span class="n">meaningful_words</span> <span class="o">=</span> <span class="p">[</span><span class="n">w</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">words</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">stops</span><span class="p">]</span>
+	<span class="k">return</span> <span class="p">(</span><span class="s">","</span><span class="p">.</span><span class="n">join</span><span class="p">(</span><span class="n">meaningful_words</span><span class="p">))</span>
+
+<span class="n">tagged_reduced</span> <span class="o">=</span> <span class="n">tagged</span><span class="p">[</span><span class="n">tagged</span><span class="p">.</span><span class="n">Code</span> <span class="o">!=</span> <span class="s">'N/A'</span><span class="p">]</span>
+<span class="k">print</span><span class="p">(</span><span class="n">tagged_reduced</span><span class="p">.</span><span class="n">head</span><span class="p">())</span>
+</code></pre></div></div>
+
+<p>The data was then split into a training and testing set. The text cleaning function was then applied on the data to ease the vectorisation of the variable. A count vectorizer with a limit of 5000 words was run on the cleaned text.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">x_train</span><span class="p">,</span> <span class="n">x_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">tagged_reduced</span><span class="p">.</span><span class="n">Question</span><span class="p">,</span><span class="n">tagged_reduced</span><span class="p">.</span><span class="n">Code</span><span class="p">,</span><span class="n">test_size</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
+<span class="n">y_train</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">y_train</span><span class="p">)</span>
+<span class="n">num_qs</span> <span class="o">=</span> <span class="n">x_train</span><span class="p">.</span><span class="n">size</span> 
+<span class="k">print</span><span class="p">(</span><span class="n">x_train</span><span class="p">.</span><span class="n">values</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">clean_q_train</span> <span class="o">=</span><span class="p">[]</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">num_qs</span><span class="p">):</span>
+	<span class="n">clean_q_train</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">to_words</span><span class="p">(</span><span class="n">x_train</span><span class="p">.</span><span class="n">values</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span>
+	<span class="k">if</span> <span class="n">i</span><span class="o">%</span><span class="mi">1000</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+		<span class="k">print</span><span class="p">(</span><span class="s">"Question %d of %d</span><span class="se">\n</span><span class="s">"</span><span class="o">%</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">num_qs</span><span class="p">))</span>
+	<span class="k">elif</span> <span class="n">i</span><span class="o">==</span><span class="p">(</span><span class="n">num_qs</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+		<span class="k">print</span><span class="p">(</span><span class="s">'finished'</span><span class="p">)</span>
+<span class="n">vectorizer</span> <span class="o">=</span> <span class="n">CountVectorizer</span><span class="p">(</span><span class="n">analyzer</span><span class="o">=</span><span class="s">'word'</span><span class="p">,</span> <span class="n">tokenizer</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span> <span class="n">stop_words</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">max_features</span> <span class="o">=</span> <span class="mi">5000</span><span class="p">)</span>
+<span class="n">train_data_features</span> <span class="o">=</span> <span class="n">vectorizer</span><span class="p">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">clean_q_train</span><span class="p">)</span>
+<span class="c1">#train_data_features = train_data_features.values()
+</span></code></pre></div></div>
+
+<p>The count of the occurences of each word was then returned. The cleaninjg function and count vectoriser were run on the test set to return the vectorisaton matrix.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">vocab</span> <span class="o">=</span> <span class="n">vectorizer</span><span class="p">.</span><span class="n">get_feature_names</span><span class="p">()</span>
+<span class="n">dist</span><span class="o">=</span><span class="n">np</span><span class="p">.</span><span class="nb">sum</span><span class="p">(</span><span class="n">train_data_features</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">dist</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">vocab</span><span class="p">)):</span>
+	<span class="k">print</span><span class="p">(</span><span class="n">vocab</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="n">dist</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="n">i</span><span class="p">])</span>
+<span class="c1">#print (train_data_features.shape)
+#print(train_data_features)
+#for i in range(0,num_qs):
+</span>	<span class="c1">#print (train_data_features[i])
+</span><span class="n">clean_q_test</span><span class="o">=</span><span class="p">[]</span>
+<span class="n">num_test_qs</span> <span class="o">=</span> <span class="n">x_test</span><span class="p">.</span><span class="n">size</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">num_test_qs</span><span class="p">):</span>
+	<span class="n">clean_q_test</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">to_words</span><span class="p">(</span><span class="n">x_test</span><span class="p">.</span><span class="n">values</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span>
+	<span class="k">if</span> <span class="n">i</span><span class="o">%</span><span class="mi">1000</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+		<span class="k">print</span><span class="p">(</span><span class="s">"Question %d of %d</span><span class="se">\n</span><span class="s">"</span><span class="o">%</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">num_test_qs</span><span class="p">))</span>
+	<span class="k">elif</span> <span class="n">i</span><span class="o">==</span><span class="p">(</span><span class="n">num_test_qs</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+		<span class="k">print</span><span class="p">(</span><span class="s">'finished'</span><span class="p">)</span>
+<span class="n">test_data_features</span> <span class="o">=</span> <span class="n">vectorizer</span><span class="p">.</span><span class="n">transform</span><span class="p">(</span><span class="n">clean_q_test</span><span class="p">)</span>
+<span class="c1">#train_data_features = np.asarray(test_data_features)
+#print(train_data_features.dtype)
+</span></code></pre></div></div>
+
+<p>Finally a support vector categorisation model was fit to the training data and run on the test data with the accuracy being returned as aroud 71%.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">clf</span> <span class="o">=</span> <span class="n">SVC</span><span class="p">(</span><span class="n">gamma</span><span class="o">=</span><span class="s">'auto'</span><span class="p">)</span>
+<span class="n">clf</span><span class="p">.</span><span class="n">fit</span><span class="p">(</span><span class="n">train_data_features</span><span class="p">,</span><span class="n">y_train</span><span class="p">)</span>
+<span class="n">y_predict</span> <span class="o">=</span> <span class="n">clf</span><span class="p">.</span><span class="n">predict</span><span class="p">(</span><span class="n">test_data_features</span><span class="p">)</span>
+<span class="n">score</span> <span class="o">=</span> <span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span><span class="n">y_predict</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">score</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="improvements">Improvements</h2>
+<p>I greatly reduced the number of both questions and tags in this project. In the future it may be better to use one hot encoding to have a column for each of the top 100 tags or more. I ran the clean text function on each line individually when it would have been more efficient to apply it to the entire column using a lambda function. This was still early in my journey into data science so I did not know as much about these techniques as I do now.</p>
+
+<p>You can find the full code for this project online <a href="https://github.com/SamMatt87/Data-science-sample-projects/blob/master/Tags/tags.py">here</a></p>
+
+        </section>
+
+        <footer>
+        
+          SamMatt87.github.io is maintained by <a href="https://github.com/SamMatt87">SamMatt87</a><br>
+        
+          This page was generated by <a href="https://pages.github.com">GitHub Pages</a>.
+        </footer>
+
+      </div>
+    </div>
+  </body>
+</html>

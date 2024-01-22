@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset='utf-8'>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="/assets/css/style.css?v=82f07e5e57fbe27d3cce2ad6bdf4dc8916d62145">
+    <link rel="stylesheet" type="text/css" href="/assets/css/print.css" media="print">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>What’s Cooking | SamMatt87.github.io</title>
+<meta name="generator" content="Jekyll v3.9.3" />
+<meta property="og:title" content="What’s Cooking" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="A place to showcase my personal Data Science projects" />
+<meta property="og:description" content="A place to showcase my personal Data Science projects" />
+<link rel="canonical" href="http://localhost:4000/SciKitLearn-basics/whats-cooking/" />
+<meta property="og:url" content="http://localhost:4000/SciKitLearn-basics/whats-cooking/" />
+<meta property="og:site_name" content="SamMatt87.github.io" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="What’s Cooking" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"A place to showcase my personal Data Science projects","headline":"What’s Cooking","url":"http://localhost:4000/SciKitLearn-basics/whats-cooking/"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup Google Analytics -->
+
+
+
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body>
+    <div id="container">
+      <div class="inner">
+
+        <header>
+          <h1>What's Cooking</h1>
+          <h2>A place to showcase my personal Data Science projects</h2>
+        </header>
+        <section id="downloads" class="clearfix">
+          
+	
+        </section>
+        <hr>
+        <section id="main_content">
+          <h2 id="background">Background</h2>
+<p>This is one of my early data science projects. For this project I wanted to practice creating tree models with SciKitLearn. This particular project looks at the ingredients in a dataset of recipes and attempts to predict the type of cuisine the recipe would be categorised under.</p>
+
+<h2 id="the-dataset">The Dataset</h2>
+<p>The dataset I used for this project can be found on kaggle <a href="https://www.kaggle.com/kaggle/recipe-ingredients-dataset">here</a>. It came in the form of a json file that had the recipe id, the type of cuisine and a list of the ingredients. You can see a sample of the first three recipes below.</p>
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">[</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">10259</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"cuisine"</span><span class="p">:</span><span class="w"> </span><span class="s2">"greek"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"ingredients"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+      </span><span class="s2">"romaine lettuce"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"black olives"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"grape tomatoes"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"garlic"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"pepper"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"purple onion"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"seasoning"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"garbanzo beans"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"feta cheese crumbles"</span><span class="w">
+    </span><span class="p">]</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">25693</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"cuisine"</span><span class="p">:</span><span class="w"> </span><span class="s2">"southern_us"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"ingredients"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+      </span><span class="s2">"plain flour"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"ground pepper"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"salt"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"tomatoes"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"ground black pepper"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"thyme"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"eggs"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"green tomatoes"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"yellow corn meal"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"milk"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"vegetable oil"</span><span class="w">
+    </span><span class="p">]</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">20130</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"cuisine"</span><span class="p">:</span><span class="w"> </span><span class="s2">"filipino"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"ingredients"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+      </span><span class="s2">"eggs"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"pepper"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"salt"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"mayonaise"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"cooking oil"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"green chilies"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"grilled chicken breasts"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"garlic powder"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"yellow onion"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"soy sauce"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"butter"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"chicken livers"</span><span class="w">
+    </span><span class="p">]</span><span class="w">
+  </span><span class="p">}]</span><span class="w">
+</span></code></pre></div></div>
+
+<h2 id="the-process">The Process</h2>
+<p>The first step in this project was to import the necessary packages, this included pandas to import the data, numpy for any calculations involved and form the sklearn package train_test_split to create a test set to assess the model accuracy and tree to create a decision tree model.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="n">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+<span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">tree</span>
+</code></pre></div></div>
+
+<p>I then had to read the data from the json file and transform it into a data frame with one row for each ingredient in a recipe.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">print</span><span class="p">(</span><span class="s">'reading data'</span><span class="p">)</span>
+<span class="n">train</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="n">read_json</span><span class="p">(</span><span class="s">"train.json"</span><span class="p">)</span>
+<span class="n">ingredient_series</span> <span class="o">=</span><span class="p">[]</span>
+<span class="k">print</span><span class="p">(</span><span class="s">'spliting by dish'</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">train</span><span class="p">)):</span>
+	<span class="c1">#print('dish ', str(i), ' of '+str(len(train)))
+</span>	<span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">train</span><span class="p">[</span><span class="s">'ingredients'</span><span class="p">][</span><span class="n">i</span><span class="p">])):</span>
+		<span class="n">ingredient_series</span><span class="p">.</span><span class="n">append</span><span class="p">([</span><span class="n">i</span><span class="p">,</span><span class="n">train</span><span class="p">[</span><span class="s">'cuisine'</span><span class="p">][</span><span class="n">i</span><span class="p">],</span><span class="n">train</span><span class="p">[</span><span class="s">'ingredients'</span><span class="p">][</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]])</span>
+<span class="n">ingredients_list</span> <span class="o">=</span><span class="n">pd</span><span class="p">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">ingredient_series</span><span class="p">,</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s">'dish no.'</span><span class="p">,</span><span class="s">'cuisine'</span><span class="p">,</span><span class="s">'ingredient'</span><span class="p">])</span>
+<span class="n">ingredients_list</span><span class="p">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s">'ingredients_list.csv'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>After this, I created another data frame with a count of the frequency in which each ingredient occured in relation to the cuisine type.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">print</span><span class="p">(</span><span class="s">'group by cuisine'</span><span class="p">)</span>
+<span class="n">ingredient_counts_series</span> <span class="o">=</span><span class="p">[]</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="n">unique</span><span class="p">(</span><span class="n">ingredients_list</span><span class="p">[</span><span class="s">'cuisine'</span><span class="p">])):</span>
+	<span class="n">cuisine_ingredients</span> <span class="o">=</span> <span class="n">ingredients_list</span><span class="p">[</span><span class="n">ingredients_list</span><span class="p">[</span><span class="s">'cuisine'</span><span class="p">]</span> <span class="o">==</span> <span class="n">i</span><span class="p">]</span>
+	<span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="n">unique</span><span class="p">(</span><span class="n">cuisine_ingredients</span><span class="p">[</span><span class="s">'ingredient'</span><span class="p">])):</span>
+		<span class="c1">#print('cuisine: ',i,' ingredient: ',j)
+</span>		<span class="n">ingredient_occurences</span> <span class="o">=</span> <span class="n">cuisine_ingredients</span><span class="p">[</span><span class="n">cuisine_ingredients</span><span class="p">[</span><span class="s">'ingredient'</span><span class="p">]</span> <span class="o">==</span> <span class="n">j</span><span class="p">]</span>
+		<span class="n">ingredient_counts_series</span><span class="p">.</span><span class="n">append</span><span class="p">([</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">ingredient_occurences</span><span class="p">[</span><span class="s">'ingredient'</span><span class="p">].</span><span class="n">count</span><span class="p">()])</span>
+<span class="n">ingredient_counts</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">ingredient_counts_series</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s">'cuisine'</span><span class="p">,</span><span class="s">'ingredient'</span><span class="p">,</span><span class="s">'count'</span><span class="p">])</span>
+<span class="n">ingredient_counts</span><span class="p">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s">'ingredient_counts.csv'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>The next step was to split the first data frame I created into X and Y variables and split them so that 20% of the data became a test set to assess the model.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">print</span><span class="p">(</span><span class="s">'training tree'</span><span class="p">)</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">ingredients_list</span><span class="p">[</span><span class="s">'ingredient'</span><span class="p">]</span>
+<span class="n">Y</span> <span class="o">=</span> <span class="n">ingredients_list</span><span class="p">[</span><span class="s">'cuisine'</span><span class="p">]</span>
+<span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">Y_train</span><span class="p">,</span> <span class="n">Y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">Y</span><span class="p">,</span><span class="n">test_size</span> <span class="o">=</span> <span class="mf">0.2</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>The CountVectorizer function was then imported from sklearn to create a labelled column for each type of ingredient.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">sklearn.feature_extraction.text</span> <span class="kn">import</span> <span class="n">CountVectorizer</span>
+<span class="n">CV</span> <span class="o">=</span> <span class="n">CountVectorizer</span><span class="p">()</span>
+<span class="n">x_counts</span> <span class="o">=</span> <span class="n">CV</span><span class="p">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+<span class="n">x_counts_df</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">x_counts</span><span class="p">.</span><span class="n">toarray</span><span class="p">())</span>
+<span class="n">x_counts_df</span><span class="p">.</span><span class="n">columns</span> <span class="o">=</span> <span class="n">CV</span><span class="p">.</span><span class="n">get_feature_names</span><span class="p">()</span>
+<span class="k">print</span><span class="p">(</span><span class="n">x_counts_df</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>The tree was then trained on the training set with a max depth of 50 and the accuracy was tested against the test set.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Groot</span> <span class="o">=</span> <span class="n">tree</span><span class="p">.</span><span class="n">DecisionTreeClassifier</span><span class="p">(</span><span class="n">max_depth</span> <span class="o">=</span> <span class="mi">50</span><span class="p">)</span>
+<span class="n">Groot</span><span class="p">.</span><span class="n">fit</span><span class="p">(</span><span class="n">x_counts_df</span><span class="p">,</span><span class="n">Y_train</span><span class="p">)</span>
+<span class="n">Groot</span><span class="p">.</span><span class="n">score</span><span class="p">(</span><span class="n">x_counts_df</span><span class="p">,</span><span class="n">Y_train</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s">'calculating error'</span><span class="p">)</span>
+<span class="n">x_counts_test_df</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">CV</span><span class="p">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_test</span><span class="p">).</span><span class="n">toarray</span><span class="p">(),</span><span class="n">columns</span><span class="o">=</span><span class="n">CV</span><span class="p">.</span><span class="n">get_feature_names</span><span class="p">())</span>
+<span class="n">Groot_predict</span> <span class="o">=</span> <span class="n">Groot</span><span class="p">.</span><span class="n">predict</span><span class="p">(</span><span class="n">x_counts_test_df</span><span class="p">)</span>
+<span class="n">Groot_Error</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">Y_test</span><span class="p">)):</span>
+	<span class="k">if</span> <span class="n">Y_test</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">!=</span><span class="n">Groot_predict</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span>
+		<span class="n">Groot_Error</span> <span class="o">+=</span> <span class="mi">1</span>
+<span class="k">print</span><span class="p">(</span><span class="s">'Errors:'</span><span class="p">,</span><span class="n">Groot_Error</span><span class="p">)</span>
+<span class="n">Accuracy</span> <span class="o">=</span> <span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">Y_test</span><span class="p">)</span><span class="o">-</span><span class="n">Groot_Error</span><span class="p">)</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">Y_test</span><span class="p">))</span><span class="o">*</span><span class="mi">100</span>
+<span class="k">print</span><span class="p">(</span><span class="s">'Accuracy:'</span><span class="p">,</span><span class="n">Accuracy</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="improvements">Improvements</h2>
+<p>This project was still early days for me and I was still learning how to use most of the parameters of certain functions. Improvements based around this would include placing a limit on the number of features used by the count vectorizer and setting the max depth of the tree to much lower than 50 to avoid overfitting. On a project specific note, many ingredients such as all purpose flour are prevalent in many cuisines so could potentially be ignored, there are also ingredients that have different names but mean the same for example black pepper and ground black pepper. Such igredients could be grouped under the same label. Finally, sometimes it is the combination of ingredients rather than the individual ingredients themselves that make a recipe fit a specific cuisine and using the count vectorizer on individual ingredients rather than a list resulted in ingrediedients with more than one word being split into individual words. In the future I would not have a row for each ingredient of a recipe but a row for each recipe with all ingredients in a list.</p>
+
+<p>You can view the full code for this project <a href="https://github.com/SamMatt87/Data-science-sample-projects/blob/master/Whats%20cookin/whats%20cookin.py">here</a>.</p>
+
+        </section>
+
+        <footer>
+        
+          SamMatt87.github.io is maintained by <a href="https://github.com/SamMatt87">SamMatt87</a><br>
+        
+          This page was generated by <a href="https://pages.github.com">GitHub Pages</a>.
+        </footer>
+
+      </div>
+    </div>
+  </body>
+</html>

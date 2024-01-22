@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset='utf-8'>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="/assets/css/style.css?v=82f07e5e57fbe27d3cce2ad6bdf4dc8916d62145">
+    <link rel="stylesheet" type="text/css" href="/assets/css/print.css" media="print">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Job Board Information | SamMatt87.github.io</title>
+<meta name="generator" content="Jekyll v3.9.3" />
+<meta property="og:title" content="Job Board Information" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="A place to showcase my personal Data Science projects" />
+<meta property="og:description" content="A place to showcase my personal Data Science projects" />
+<link rel="canonical" href="http://localhost:4000/job_board_info" />
+<meta property="og:url" content="http://localhost:4000/job_board_info" />
+<meta property="og:site_name" content="SamMatt87.github.io" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Job Board Information" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"A place to showcase my personal Data Science projects","headline":"Job Board Information","url":"http://localhost:4000/job_board_info"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup Google Analytics -->
+
+
+
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body>
+    <div id="container">
+      <div class="inner">
+
+        <header>
+          <h1>Job Board Information</h1>
+          <h2>A place to showcase my personal Data Science projects</h2>
+        </header>
+        <section id="downloads" class="clearfix">
+          
+	
+        </section>
+        <hr>
+        <section id="main_content">
+          <h1 id="job-board-information">Job Board Information</h1>
+<h2 id="background">Background</h2>
+<p>I want to be able to generate a customised resume for every job I apply for. I have built a tool, that I may share at a later date, to help with this process but it requires input such as:</p>
+<ul>
+  <li>The name of the company to include in the document name</li>
+  <li>The country of the job for wheteher I should include my phone number</li>
+  <li>Keywords from the description to filter the skills I have that are required</li>
+</ul>
+
+<p>This data is all available on the job ad page and is extractable via web scraping. Due to the different structure of each job board, the code to extract the data needs to be different for each. The main job boards I am using at the moment are:</p>
+<ul>
+  <li>LinkedIn</li>
+  <li>Seek</li>
+</ul>
+
+<h2 id="linkedin">LinkedIn</h2>
+<h3 id="company-name">Company Name</h3>
+<p>The easiest accessible company name is in a link tagged with a class name of <code class="language-plaintext highlighter-rouge">"topcard__org-name-link topcard__flavor--black-link"</code>. I used the <code class="language-plaintext highlighter-rouge">BeautifulSoup</code> package with <code class="language-plaintext highlighter-rouge">requests.get</code> to extract the text from this tag and removed any leading or trailing whitespace with <code class="language-plaintext highlighter-rouge">strip</code>. The full code can be seen below.</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>def get_company(url: str) -&gt; str:
+    response = get(url)
+    soup = BeautifulSoup(response.text, 'html.parser')
+    company_link = soup.find('a', class_="topcard__org-name-link topcard__flavor--black-link")
+    company = company_link.get_text().strip()
+    return company
+</code></pre></div></div>
+
+<h3 id="country">Country</h3>
+<p>The full location of the role including the city, state and country is stored in a span tag with the class name <code class="language-plaintext highlighter-rouge">"topcard__flavor topcard__flavor--bullet"</code>. Similarly to the company name, I used <code class="language-plaintext highlighter-rouge">Beautiful Soup</code> and <code class="language-plaintext highlighter-rouge">requests.get</code> to etract this text. Once I had the location, I searched the text for the keyword “Australia” to see if this was a local or international role. I would include my phone number if it was local but not if it was international as I am applying for both local and overseas roles. The code for this is shown below.</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>def is_Australian(url:str) -&gt; bool:
+    response = get(url)
+    soup = BeautifulSoup(response.text, 'html.parser')
+    Location = soup.find('span', class_="topcard__flavor topcard__flavor--bullet")
+    Location_text = Location.get_text()
+    if 'Australia' in Location_text:
+        return True
+    else:
+        return False
+</code></pre></div></div>
+
+<h3 id="role-description">Role Description</h3>
+<p>I needed to find the skills mentioned in the role description to filter for the skills I should include in my resume. The role description covers an entire section of the page marked by a div tag with the class name <code class="language-plaintext highlighter-rouge">"description__text description__text--rich"</code> I ince again used <code class="language-plaintext highlighter-rouge">BeautifulSoup</code> and <code class="language-plaintext highlighter-rouge">requests.get</code> to extract the text of this section but as the section covered multiple tags, I needed to include the <code class="language-plaintext highlighter-rouge">separator</code> parameter to split the text from each tag and the <code class="language-plaintext highlighter-rouge">strip</code> parameter to strip the whitespace from each tag, rather than applying the <code class="language-plaintext highlighter-rouge">strip</code> function to the entire text as I had done previously, when extracting the text. I also want to remove the last 22 characters which is the text from the “Show More” and “Show Less” buttons. Once I have extracted the text, the next step is to cycle through keywords in my skills and see if they are listed in the description. This method is not perfect as it may highlight skills that are not needed such as highlighting “Management” skills when it sees the phrase “Database Management” and also ignores related keywords such as not highlighting my “Neural Networks” skills when the tool “pytorch” is mentioned. Both of these issues can be fixed with future updates and as I still manually check the skills required before generating the resume, this is a good first step. The code for the skills generation is shown below.</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>def skill_search(url: str, skills: List[str]) -&gt; List[str]:
+    response = get(url)
+    soup = BeautifulSoup(response.text, 'html.parser')
+    description = soup.find('div', class_="description__text description__text--rich")
+    description_text = description.get_text(separator=". ", strip=True)[:-22]
+    recomended_skills: List[str] = []
+    for skill in skills:
+        if skill.lower() in description_text.lower():
+            recomended_skills.append(skill)
+    return recomended_skills
+</code></pre></div></div>
+
+<h2 id="seek">Seek</h2>
+<h3 id="company">Company</h3>
+<p>The  easiest way to extract the company name from Seek is by using the span tag with the <code class="language-plaintext highlighter-rouge">data-automation</code> attribute of <code class="language-plaintext highlighter-rouge">advertiser-name</code>. As there is no extra whitespace, I did not have to use <code class="language-plaintext highlighter-rouge">strip</code> when extracting the text using <code class="language-plaintext highlighter-rouge">BeautifulSoup</code> and <code class="language-plaintext highlighter-rouge">requests.get</code> as I did with LinkedIn. The code for this extraction is shown below.</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>def get_company(url:str) -&gt; str:
+    response = get(url)
+    soup = BeautifulSoup(response.text, 'html.parser')
+    company_link = soup.find('span', attrs={'data-automation':'advertiser-name'})
+    company = company_link.get_text()
+    return company
+</code></pre></div></div>
+
+<h3 id="country-1">Country</h3>
+<p>As seek is an Australian only website, I did not need to extract the country and set the defaul to True in regards to including my phone number.</p>
+
+<h3 id="role-description-1">Role Description</h3>
+<p>Extracting the description was similar to the process for LinkedIn. The div section in this case had a <code class="language-plaintext highlighter-rouge">data-automation</code> tag of <code class="language-plaintext highlighter-rouge">jobAdDetails</code>. I had to include a separator, but not the split attribute when extracting the details with <code class="language-plaintext highlighter-rouge">BeautifulSoup</code> and <code class="language-plaintext highlighter-rouge">requests.get</code>. Afterwards, the same search method is used as with LinkedIn to find relevant skills with the same shortcomings. The code for this is shown below.</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>def skill_search(url:str, skills:List[str]) -&gt; List[str]:
+    response = get(url)
+    soup = BeautifulSoup(response.text, 'html.parser')
+    description = soup.find('div', attrs={'data-automation':'jobAdDetails'})
+    description_text = description.get_text(separator=". ")
+    recomended_skills:List[str] = []
+    for skill in skills:
+        if skill in description_text:
+            recomended_skills.append(skill)
+    return recomended_skills
+</code></pre></div></div>
+
+<h2 id="return-home"><a href="https://sammatt87.github.io/">Return Home</a></h2>
+
+        </section>
+
+        <footer>
+        
+          SamMatt87.github.io is maintained by <a href="https://github.com/SamMatt87">SamMatt87</a><br>
+        
+          This page was generated by <a href="https://pages.github.com">GitHub Pages</a>.
+        </footer>
+
+      </div>
+    </div>
+  </body>
+</html>

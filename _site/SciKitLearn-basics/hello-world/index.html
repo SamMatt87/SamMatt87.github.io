@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset='utf-8'>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="/assets/css/style.css?v=82f07e5e57fbe27d3cce2ad6bdf4dc8916d62145">
+    <link rel="stylesheet" type="text/css" href="/assets/css/print.css" media="print">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Hello World | SamMatt87.github.io</title>
+<meta name="generator" content="Jekyll v3.9.3" />
+<meta property="og:title" content="Hello World" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="A place to showcase my personal Data Science projects" />
+<meta property="og:description" content="A place to showcase my personal Data Science projects" />
+<link rel="canonical" href="http://localhost:4000/SciKitLearn-basics/hello-world/" />
+<meta property="og:url" content="http://localhost:4000/SciKitLearn-basics/hello-world/" />
+<meta property="og:site_name" content="SamMatt87.github.io" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Hello World" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"A place to showcase my personal Data Science projects","headline":"Hello World","url":"http://localhost:4000/SciKitLearn-basics/hello-world/"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup Google Analytics -->
+
+
+
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body>
+    <div id="container">
+      <div class="inner">
+
+        <header>
+          <h1>Hello World</h1>
+          <h2>A place to showcase my personal Data Science projects</h2>
+        </header>
+        <section id="downloads" class="clearfix">
+          
+	
+        </section>
+        <hr>
+        <section id="main_content">
+          <h2 id="background">Background</h2>
+<p>This was one of my first data science projects. I decided to run some models on the Titanic dataset considered by many to be the “Hello World” of data science. The goal of this project was to use details about the passengers to predict whether or not they survived the sinking of the Titanic.</p>
+
+<h2 id="the-dataset">The Dataset</h2>
+<p>The dataset was downloaded from kaggle <a href="https://www.kaggle.com/rahulsah06/titanic">here</a>. It includes details such as the class they were travelling in, their gender, their age as well as other important variables including whether or not the passenger survied. A sample of the data can be seen below.</p>
+
+<p><img src="https://user-images.githubusercontent.com/18587666/134831174-1f2d945f-7d81-429d-ab4b-ec90d01e222b.png" alt="image" /></p>
+
+<h2 id="the-process">The Process</h2>
+<p>The first step in my code was to import the necessary packages. This included pandas for data extraction, train_test_split to split the data into treain and test sets, tree for the decision tree model, LabelEncoder to turn categorical variables into labels, numpy and math for mathematical operations on the data and grphviz to visualise the tree model.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="n">pd</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+<span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">tree</span>
+<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">LabelEncoder</span>
+<span class="kn">import</span> <span class="nn">numpy</span>
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">import</span> <span class="nn">graphviz</span>
+</code></pre></div></div>
+
+<p>Next was the importing and preprocessing of the data. I imported the data from the csv, then created the X and Y datasets dropping the survived and any unique variables from the X data and only keeping survived for the Y data. I then ran two label encoders on the gender and embarked (which port the passengers joined the ship) variables. I also filled in the average age for any passengers where the age was missing. The data was then split into train and test sets in order to test the performance of the various models.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">passengers</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s">'train.csv'</span><span class="p">)</span>
+<span class="n">X</span><span class="o">=</span><span class="n">passengers</span><span class="p">.</span><span class="n">drop</span><span class="p">([</span><span class="s">'PassengerId'</span><span class="p">,</span><span class="s">'Survived'</span><span class="p">,</span><span class="s">'Name'</span><span class="p">,</span><span class="s">'Cabin'</span><span class="p">,</span><span class="s">'Ticket'</span><span class="p">,],</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">Y</span><span class="o">=</span><span class="n">passengers</span><span class="p">[</span><span class="s">'Survived'</span><span class="p">]</span>
+<span class="n">Label_Encoder</span> <span class="o">=</span> <span class="n">LabelEncoder</span><span class="p">()</span>
+<span class="n">Label_Encoder2</span> <span class="o">=</span> <span class="n">LabelEncoder</span><span class="p">()</span>
+<span class="n">gender_encoded</span> <span class="o">=</span> <span class="n">Label_Encoder</span><span class="p">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="s">'Sex'</span><span class="p">])</span>
+<span class="n">port_encoded</span> <span class="o">=</span> <span class="n">Label_Encoder2</span><span class="p">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="s">'Embarked'</span><span class="p">])</span>
+<span class="n">X</span><span class="p">[</span><span class="s">'Sex'</span><span class="p">]</span> <span class="o">=</span> <span class="n">gender_encoded</span>
+<span class="n">X</span><span class="p">[</span><span class="s">'Embarked'</span><span class="p">]</span> <span class="o">=</span> <span class="n">port_encoded</span>
+<span class="n">X</span><span class="p">[</span><span class="s">'Age'</span><span class="p">]</span><span class="o">=</span><span class="n">X</span><span class="p">[</span><span class="s">'Age'</span><span class="p">].</span><span class="n">fillna</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="s">'Age'</span><span class="p">].</span><span class="n">mean</span><span class="p">())</span>
+
+<span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">Y_train</span><span class="p">,</span> <span class="n">Y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">Y</span><span class="p">,</span><span class="n">test_size</span> <span class="o">=</span> <span class="mf">0.2</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>The first model type used to predict the outcome was a deciision tree. The only limitation I set on this tree was a maximum depth of 50. After running the fit and score methods on the training set, I compared the test set prediction to the actual values to assess model accuracy. I also used graphviz to show the nodes in the model. It had 45 errors for approximately 75% accuracy.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Groot</span> <span class="o">=</span> <span class="n">tree</span><span class="p">.</span><span class="n">DecisionTreeClassifier</span><span class="p">(</span><span class="n">max_depth</span> <span class="o">=</span> <span class="mi">50</span><span class="p">)</span>
+<span class="n">Groot</span><span class="p">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span><span class="n">Y_train</span><span class="p">)</span>
+<span class="n">Groot</span><span class="p">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span><span class="n">Y_train</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s">'Decision Tree'</span><span class="p">)</span>
+<span class="n">Groot_predict</span> <span class="o">=</span> <span class="n">Groot</span><span class="p">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+<span class="n">Y_test_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">Y_test</span><span class="p">)</span>
+<span class="n">Groot_Error</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">Y_test</span><span class="p">)):</span>
+	<span class="k">if</span> <span class="n">Y_test_list</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">!=</span><span class="n">Groot_predict</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span>
+		<span class="n">Groot_Error</span> <span class="o">+=</span> <span class="mi">1</span>
+<span class="k">print</span><span class="p">(</span><span class="s">'Errors:'</span><span class="p">,</span><span class="n">Groot_Error</span><span class="p">)</span>
+<span class="n">Accuracy</span> <span class="o">=</span> <span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">Y_test</span><span class="p">)</span><span class="o">-</span><span class="n">Groot_Error</span><span class="p">)</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">Y_test</span><span class="p">))</span><span class="o">*</span><span class="mi">100</span>
+<span class="k">print</span><span class="p">(</span><span class="s">'Accuracy:'</span><span class="p">,</span><span class="n">Accuracy</span><span class="p">)</span>
+<span class="n">groot_data</span> <span class="o">=</span> <span class="n">tree</span><span class="p">.</span><span class="n">export_graphviz</span><span class="p">(</span><span class="n">Groot</span><span class="p">,</span> <span class="n">out_file</span> <span class="o">=</span><span class="s">'out.dot'</span><span class="p">,</span> <span class="n">feature_names</span> <span class="o">=</span> <span class="n">X</span><span class="p">.</span><span class="n">columns</span><span class="p">,</span> <span class="n">class_names</span> <span class="o">=</span> <span class="p">[</span><span class="s">'Survived'</span><span class="p">,</span><span class="s">'Dead'</span><span class="p">],</span><span class="n">filled</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">rounded</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>  
+                         <span class="n">special_characters</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">graph</span> <span class="o">=</span> <span class="n">graphviz</span><span class="p">.</span><span class="n">Source</span><span class="p">(</span><span class="n">groot_data</span><span class="p">)</span>
+<span class="n">graph</span>
+</code></pre></div></div>
+
+<p>The second type of model was a random forest. I set the number of estimators to 100, the maximum features to 5 and the maximum depth to 50. I fit the model on the training set and compared the results of the test set prediction to the real values for accuracy. This model had 33 errors for 81.5% accuracy.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">print</span><span class="p">(</span><span class="s">'Random Forest'</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="kn">import</span> <span class="n">RandomForestClassifier</span>
+<span class="n">forest</span> <span class="o">=</span> <span class="n">RandomForestClassifier</span><span class="p">(</span><span class="n">n_estimators</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="n">max_features</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span> <span class="n">max_depth</span> <span class="o">=</span> <span class="mi">50</span><span class="p">)</span>
+<span class="n">forest</span> <span class="o">=</span> <span class="n">forest</span><span class="p">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span><span class="n">Y_train</span><span class="p">)</span>
+<span class="n">RF_predict</span> <span class="o">=</span> <span class="n">forest</span><span class="p">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+<span class="n">RF_Error</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">Y_test</span><span class="p">)):</span>
+	<span class="k">if</span> <span class="n">Y_test_list</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">!=</span><span class="n">RF_predict</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span>
+		<span class="n">RF_Error</span> <span class="o">+=</span> <span class="mi">1</span>
+<span class="k">print</span><span class="p">(</span><span class="s">'Errors:'</span><span class="p">,</span><span class="n">RF_Error</span><span class="p">)</span>
+<span class="n">RF_Accuracy</span> <span class="o">=</span> <span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">Y_test</span><span class="p">)</span><span class="o">-</span><span class="n">RF_Error</span><span class="p">)</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">Y_test</span><span class="p">))</span><span class="o">*</span><span class="mi">100</span>
+<span class="k">print</span><span class="p">(</span><span class="s">'Accuracy:'</span><span class="p">,</span><span class="n">RF_Accuracy</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>I then trained a logitic regression model. After fitting and scoring the model to the training data I printed out the intercept and coefficients to see how a change in each variable would effect the model. After this, I calculted the accuracy similar to the other models. This model had 42 errors for 76.5% accuracy.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">print</span><span class="p">(</span><span class="s">'Linear Regression'</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LogisticRegression</span>
+<span class="n">Silverchair</span> <span class="o">=</span> <span class="n">LogisticRegression</span><span class="p">()</span>
+<span class="n">Silverchair</span><span class="p">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span><span class="n">Y_train</span><span class="p">)</span>
+<span class="n">Silverchair</span><span class="p">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span><span class="n">Y_train</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s">'Coefficient:</span><span class="se">\n</span><span class="s">'</span><span class="p">,</span><span class="n">Silverchair</span><span class="p">.</span><span class="n">coef_</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"Intercept:</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="n">Silverchair</span><span class="p">.</span><span class="n">intercept_</span><span class="p">)</span>
+<span class="n">Silverchair_predict</span> <span class="o">=</span> <span class="n">Silverchair</span><span class="p">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+<span class="n">Silverchair_Error</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">Y_test</span><span class="p">)):</span>
+	<span class="k">if</span> <span class="n">Y_test_list</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">!=</span><span class="n">Silverchair_predict</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span>
+		<span class="n">Silverchair_Error</span> <span class="o">+=</span> <span class="mi">1</span>
+<span class="k">print</span><span class="p">(</span><span class="s">'Errors: '</span><span class="p">,</span><span class="n">Silverchair_Error</span><span class="p">)</span>
+<span class="n">Silverchair_accuracy</span> <span class="o">=</span> <span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">Y_test</span><span class="p">)</span><span class="o">-</span><span class="n">Silverchair_Error</span><span class="p">)</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">Y_test</span><span class="p">))</span><span class="o">*</span><span class="mi">100</span>
+<span class="k">print</span><span class="p">(</span><span class="s">'Accuracy: '</span><span class="p">,</span><span class="n">Silverchair_accuracy</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Next was a support vector machine model. For this model I chose a linear kernel and set the nu to 0.4. As with the other models, I trained and scored it on the test data and calculated the accuracy. This model had 41 errors for 77% accuracy.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">print</span><span class="p">(</span><span class="s">'SVM'</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">svm</span>
+<span class="n">svm_model</span> <span class="o">=</span> <span class="n">svm</span><span class="p">.</span><span class="n">NuSVC</span><span class="p">(</span><span class="n">kernel</span> <span class="o">=</span> <span class="s">'linear'</span><span class="p">,</span> <span class="n">nu</span> <span class="o">=</span> <span class="mf">0.4</span><span class="p">)</span>
+<span class="n">svm_model</span><span class="p">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span><span class="n">Y_train</span><span class="p">)</span>
+<span class="n">svm_model</span><span class="p">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span><span class="n">Y_train</span><span class="p">)</span>
+<span class="n">svm_predict</span> <span class="o">=</span> <span class="n">svm_model</span><span class="p">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+<span class="n">SVM_Error</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">Y_test</span><span class="p">)):</span>
+	<span class="k">if</span> <span class="n">Y_test_list</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">!=</span><span class="n">svm_predict</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span>
+		<span class="n">SVM_Error</span> <span class="o">+=</span> <span class="mi">1</span>
+<span class="k">print</span><span class="p">(</span><span class="s">'Errors:'</span><span class="p">,</span><span class="n">SVM_Error</span><span class="p">)</span>
+<span class="n">SVM_Accuracy</span> <span class="o">=</span> <span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">Y_test</span><span class="p">)</span><span class="o">-</span><span class="n">SVM_Error</span><span class="p">)</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">Y_test</span><span class="p">))</span><span class="o">*</span><span class="mi">100</span>
+<span class="k">print</span><span class="p">(</span><span class="s">'Accuracy:'</span><span class="p">,</span><span class="n">SVM_Accuracy</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>The final model I trined was a naive bayes. I set fit prior to false and alpha to 0.4. following a similar procedure to the other models to fit and score the model and retrieve the accuracy, the model had 62 errors for 65.3% accuracy.</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">print</span><span class="p">(</span><span class="s">'Naive Bayes'</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">sklearn.naive_bayes</span> <span class="kn">import</span> <span class="n">MultinomialNB</span>
+<span class="n">NB</span> <span class="o">=</span> <span class="n">MultinomialNB</span><span class="p">(</span><span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.4</span><span class="p">,</span> <span class="n">fit_prior</span> <span class="o">=</span> <span class="bp">False</span><span class="p">)</span>
+<span class="n">NB</span><span class="p">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span><span class="n">Y_train</span><span class="p">)</span>
+<span class="n">NB</span><span class="p">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span><span class="n">Y_train</span><span class="p">)</span>
+<span class="n">NB_predict</span> <span class="o">=</span> <span class="n">NB</span><span class="p">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+<span class="n">NB_Error</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">Y_test</span><span class="p">)):</span>
+	<span class="k">if</span> <span class="n">Y_test_list</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">!=</span><span class="n">NB_predict</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span>
+		<span class="n">NB_Error</span> <span class="o">+=</span> <span class="mi">1</span>
+<span class="k">print</span><span class="p">(</span><span class="s">'Errors:'</span><span class="p">,</span><span class="n">NB_Error</span><span class="p">)</span>
+<span class="n">NB_Accuracy</span> <span class="o">=</span> <span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">Y_test</span><span class="p">)</span><span class="o">-</span><span class="n">NB_Error</span><span class="p">)</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">Y_test</span><span class="p">))</span><span class="o">*</span><span class="mi">100</span>
+<span class="k">print</span><span class="p">(</span><span class="s">'Accuracy:'</span><span class="p">,</span><span class="n">NB_Accuracy</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="improvements">Improvements</h2>
+<p>As I said at the start, this was one of the first data science projects I worked on. I didn’t adjust many features for each model and only really looked at each models performance in their mos basic forms. I have since learned more about the adjustable parameters for each model type and are more familiar about the effect of adjusting each. I also am more familiar with techniques such as one hot encoding, which I would have used for the categorical variables.</p>
+
+<p>You can view the full code for this project <a href="https://github.com/SamMatt87/Data-science-sample-projects/blob/master/Hello%20World/hello%20world.py">here</a>.</p>
+
+        </section>
+
+        <footer>
+        
+          SamMatt87.github.io is maintained by <a href="https://github.com/SamMatt87">SamMatt87</a><br>
+        
+          This page was generated by <a href="https://pages.github.com">GitHub Pages</a>.
+        </footer>
+
+      </div>
+    </div>
+  </body>
+</html>
