@@ -2,6 +2,7 @@
 layout: default
 title: Job Board Information
 permalink: /job_board_info
+description: "Using webscraping to extract job information"
 ---
 # Job Board Information
 ## Background

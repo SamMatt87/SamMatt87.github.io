@@ -2,6 +2,7 @@
 layout: default
 title: Data Source Type
 permalink: /data_type
+description: "Projects split by the type of data ingested"
 ---
 # Data Types
 Here you can see my projects split by the type of data being used.

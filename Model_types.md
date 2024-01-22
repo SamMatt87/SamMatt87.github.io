@@ -2,6 +2,7 @@
 layout: default
 title: Model Type
 permalink: /model_type
+description: "Projects split by the type of model applied"
 ---
 # Model Types
 Here you can see my projects split by the type of model applied
