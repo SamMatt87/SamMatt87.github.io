@@ -2,13 +2,13 @@
 layout: default
 title: Lego sets classification
 permalink: /lego_sets_classification
-description: "Using the rebrickable API to classify lego sets"
+description: "Using the rebrickable API to classify Lego sets"
 ---
 
 # Lego Sets Classificaiton
 ## Background
 
-One of my hobbies is building Lego models. The website www.rebrickable.com has a database of lego sets as well as a marketplace for people to by and sell sets with others. They also have a number of  APIs to interact with this database which I will be using for this project. Due to rate limitations, it will take too long to collect sufficient data for every Lego set that has ever existed so I will be limiting this project to the "Star Wars" themed sets which will be celebrating their 25th aniversary in 2024. This theme currently has 168 sets and is targeted towards both children and adults so should be useful for this project. 
+One of my hobbies is building Lego models. The website www.rebrickable.com has a database of Lego sets as well as a marketplace for people to buy and sell sets with others. They also have several  APIs to interact with this database which I will be using for this project. Due to rate limitations, it will take too long to collect sufficient data for every Lego set that has ever existed so I will be limiting this project to the "Star Wars" themed sets which will be celebrating their 25th anniversary in 2024. This theme currently has 168 sets and is targeted towards both children and adults so should be useful for this project. 
 
 ## API Interaction
 
@@ -60,7 +60,7 @@ The output for a single set looks like this `[{'set_num': '75275-1', 'name': 'A-
 
 ### Parts API
 
-The parts API lists the types of lego parts in each set. This is useful for seeing the nuber of unique part types in each set. Some sets have mpre parts than would fit on a standard page so I needed to set a large page size to be sure to count all the unique parts. You can see the code for this extraction below.
+The parts API lists the types of Lego parts in each set. This is useful for seeing the number of unique part types in each set. Some sets have more parts than would fit on a standard page so I needed to set a large page size to be sure to count all the unique parts. You can see the code for this extraction below.
 ```
 def unique_parts(set: str) -> int:
     operation = f"/api/v3/lego/sets/{set}/parts/?page_size=1000"
@@ -71,7 +71,7 @@ def unique_parts(set: str) -> int:
 
 ### MOCs API
 
-In the Lego community a MOC or "My Own Creation" is a user created set, sometimes based on the parts available in an existing set. This API returns the details of registered MOCs filtered by the base set that they started with. Looking at the number of MOCs based on each set may be an indication of the set classification. I included the code to extract this nuber below.
+In the Lego community a MOC or "My Own Creation" is a user-created set, sometimes based on the parts available in an existing set. This API returns the details of registered MOCs filtered by the base set that they started with. Looking at the number of MOCs based on each set may be an indication of the set classification. I included the code to extract this nuber below.
 ```
 def moc_count(set: str) -> int:
     operation = f"/api/v3/lego/sets/{set}/alternates/?page_size=100"
@@ -83,23 +83,34 @@ def moc_count(set: str) -> int:
 ## Data Exploration
 
 Using the APIs, I was able to visualise the spread of data across a number of variables I believed significant for categorising sets. These variables included:
-- Rekease Year
+- Release Year
 - Number of parts
 - Percentage of parts that are unique (number of part types/number of parts)
 - Number of MOCs based on the set
 
 ### Release Year
 
-This graph shows some interesting insights. First, we can see spikes for the release of The Phantom Menace in 2000 and Attack of the Clones in 2002/2003 but then there is a dip with little releases in 2005 for Revenge of the Sith. We then see a spike in 2009 with subsequent years matching it sugesting that this is due to the Clone Wars TV series. What's also interesting is that the buyout of Lucasfilm by Disney in late 2012 does not seem to have effected the number of sets released as they appear to remain in line with the years leading up to it. The sequel movies also do not appear to have associated spikes.
+This graph shows some interesting insights. First, we can see spikes for the release of The Phantom Menace in 2000 and Attack of the Clones in 2002/2003 but then there is a dip with little releases in 2005 for Revenge of the Sith. We then see a spike in 2009 with subsequent years matching it suggesting that this is due to the Clone Wars TV series. What's also interesting is that the buyout of Lucasfilm by Disney in late 2012 does not seem to have affected the number of sets released as they appear to remain in line with the years leading up to it. The sequel movies also do not appear to have associated spikes.
+
+![Release year](https://github.com/SamMatt87/SamMatt87.github.io/assets/18587666/96fb44fc-202c-430f-94bb-9dea677c8f05)
+
 
 ### Number of Parts
 
-Looking at the number of parts, we can see two logarithmic style curves. The first starts at sets with less than 100 pieces and ends in the 700 range, there is then a gap between this and when we start binning sets by thousands of pieces start at the 1,000 range abd again ending in the 7,000 range. This gap indicates that this variable could be very useful in splitting and classifying the sets.
+Looking at the number of parts, we can see two logarithmic-style curves. The first starts at sets with less than 100 pieces and ends in the 700 range, there is then a gap between this and when we start binning sets by thousands of pieces starting at the 1,000 range and again ending in the 7,000 range. This gap indicates that this variable could be very useful in splitting and classifying the sets.
+
+![num pieces](https://github.com/SamMatt87/SamMatt87.github.io/assets/18587666/32aceeed-68d0-46fa-829d-8561aa771a28)
+
 
 ### Unique Parts
 
-This data also looks like a Bimodal distribution only this time of two normal distributions centered around 20% and 60%. Agian, the fact that there are two peaks sugests a significant variable for our purposes.
+This data also looks like a Bimodal distribution only this time of two normal distributions centered around 20% and 60%. Again, the fact that there are two peaks suggests a significant variable for our purposes.
+
+![unique parts](https://github.com/SamMatt87/SamMatt87.github.io/assets/18587666/54ef1985-7322-41da-b4a1-0c75d4b6e88d)
+
 
 ### MOCs
 
-This is another logarithmic style curve with the vast mjority of sets having no MOCs with them as the base. With this in mind, it may be better to simply have a flag for this variable in our model for whether or not any MOCs exist.
+This is another logarithmic style curve with the vast majority of sets having no MOCs with them as the base. With this in mind, it may be better to have a flag for this variable in our model for whether or not any MOCs exist.
+
+![num mocs](https://github.com/SamMatt87/SamMatt87.github.io/assets/18587666/c8fd6f82-f86f-41ce-b5fc-c5be67bc9106)
