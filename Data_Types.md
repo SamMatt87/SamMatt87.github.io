@@ -11,4 +11,8 @@ Here you can see my projects split by the type of data being used.
 ### [Job board information](https://sammatt87.github.io/job_board_info)
 Extracting useful information from job boards for customisable resumes
 
+## Structured Data
+### [Lego sets](https://sammatt87.github.io/lego_sets_classification)
+Using the rebrickable API to classify Lego sets
+
 ## [Return Home](https://sammatt87.github.io/)
