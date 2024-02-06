@@ -117,24 +117,28 @@ This is another logarithmic style curve with the vast majority of sets having no
 
 ## Modelling
 
-The focus for this project is to demonstrate my understanding of unsupervised learning. The main difference between supervised and unsupervised learning is that for unsupervised learning, we do not include labels when training the model. This is because we are looking for new categorisations for the data that may not have been thought of before. Useful applications of this type of model include categorising types of customers by their buying patterns or, in the case of this project, categorising the target market for a Lego set using factors such as the number of pieces, the number of unique types and whether or not the online community has used this set to create their own. The type of model I will be using in this project is the K-Means model, this model splits the data into K clusters while trying to minimise the distance between points in the clusters and their mean position and stops once these two variables are stabilised. The model can take any number of input variables but is best visualised when using 2 or 3 variables. If we exclude the year of release varible we can see 3d repesentations of the clusters in the graph below with the nuber of clusters between 2 and 9 visualised by the number of parts. the percentage of unique parts and whether or not a MOC exists. 
+The focus of this project is to demonstrate my understanding of unsupervised learning. The main difference between supervised and unsupervised learning is that for unsupervised learning, we do not include labels when training the model. This is because we are looking for new categorisations for the data that may not have been thought of before. Useful applications of this type of model include categorising types of customers by their buying patterns or, in the case of this project, categorising the target market for a Lego set using factors such as the number of pieces, the number of unique types and whether or not the online community has used this set to create their own. The type of model I will be using in this project is the K-Means model, this model splits the data into K clusters while trying to minimise the distance between points in the clusters and their mean position and stops once these two variables are stabilised. The model can take any number of input variables but is best visualised when using 2 or 3 variables. If we exclude the year of release variable we can see 3d representations of the clusters in the graph below with the number of clusters between 2 and 9 visualised by the number of parts. the percentage of unique parts and whether or not a MOC exists. 
+
+![image](https://github.com/SamMatt87/SamMatt87.github.io/assets/18587666/b2db7b10-441d-407e-95ca-aa30c15df53e)
 
 
+By looking at the previous graphs, it can be seen that the existence of an MOC is not significant as it does not seem to be used in splitting the clusters. This can be seen further in the two sets of graphs below that show the MOC flag versus the number of pieces and the percentage of unique parts respectively.
 
-By looking at the previous graphs, it can be seen that the existence of a MOC is not significant as it does not seem to be used in splitting the clusters. This can be seen further in the two sets of graphs below that show the MOC flag versus the number of pieces and the percentage of unique parts respectively.
+![image](https://github.com/SamMatt87/SamMatt87.github.io/assets/18587666/3b0f976e-f42b-4c66-8d00-07ce271ad0c3)
 
-
+![image](https://github.com/SamMatt87/SamMatt87.github.io/assets/18587666/2d0123d2-3e9f-46e1-8589-254997eb1893)
 
 If we focus on only the number of pieces and the percentage of unique pieces instead, we can see better splits in the new graphs below.
 
+![image](https://github.com/SamMatt87/SamMatt87.github.io/assets/18587666/88f497e7-2f00-4b47-9dae-41a7205c62a6)
 
 
 We can also plot these two variables against the release year, the one variable that we have not covered yet in the set of graphs below.
 
+![image](https://github.com/SamMatt87/SamMatt87.github.io/assets/18587666/59e3c012-fc41-48e1-a36d-105092b2637a)
 
+Looking at these graphs, I believe that the best representation of cluster comes from the number of pieces versus the percentage of unique parts splits and this is best split at 4 clusters. By looking at the sets, we can see that the cluster at the end includes the Milenium Falcon set, the AT-AT set, as well as the newly released Venator-Class Republic Attack Cruiser set. These sets are for more advanced users due to the complexity and the number of pieces. The next cluster includes multiple Death Star and Star Destroyer sets among others which seem the next step down in terms of complexity. We then have some simpler sets but still complex enough to be reserved for the 18+ range. The remainder of the sets are mainly for younger builders or collections of minifigures. Splitting the sets this way allowed us to separate the sets of different age ranges and complexities to determine their target market. It can also help to classify any new sets that may be added in the future.
 
-Looking at these graphs, I believe that the best representation of cluster comes from the number of pieces versus the percentage of unique parts splits and this is best split at 4 clusters. By looking at the sets, we can see that the cluster at the end includes the Milenium Falcon set, the AT-AT set as well as the newly released Venator-Class Republic Attack Cruiser set. These sets are for more advanced users due to the complexity and the number of pieces. The next cluster includes multiple Death Star and Star Destroyer sets among others which seem the next step down complexity wise. We then have some simpler sets but still complex enough to be reserved for the 18+ range. The remainder of the sets are mainly for younger builders or collections of minifigures. Splitting the sets this way allowed us to separate the sets of different age ranges and complexities to determine their target market. It can also help to classify any new sets that may be added in the future.
-
-If you would like to dive more into this analysis, the code files including the api extractor, the data exploration and a jupyter notebook where I explore the different models are all available in the repository at [https://github.com/SamMatt87/Lego].
+If you would like to dive more into this analysis, the code files including the API extractor, the data exploration and a Jupyter notebook where I explore the different models are all available in the repository at [https://github.com/SamMatt87/Lego].
 
 ## [Return Home](https://sammatt87.github.io/)
