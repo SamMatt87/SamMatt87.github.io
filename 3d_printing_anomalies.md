@@ -318,3 +318,5 @@ for error, anomaly, pxl_error in sorted(zip(anomaly_errors, anomalies, anomaly_p
     print(anomaly in anomaly_indexes)
 cv2.imwrite(os.path.join("anomalies",f"{timestamp}.png"), outputs)
 ```
+
+## [Return Home](https://sammatt87.github.io/)

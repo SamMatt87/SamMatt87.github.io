@@ -25,4 +25,4 @@ Split by the data source such as web scraping, api and database
 Split by the type of input data such as text or images
 
 ### [Project by model type](https://sammatt87.github.io/model_type)
-Split by the type of model used such as Decision Tree, KNN and Neural Networks
+Split by the type of model used such as KMeans and Neural Networks
