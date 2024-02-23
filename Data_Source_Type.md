@@ -15,4 +15,8 @@ Extracting useful information from job boards for customisable resumes
 ### [Lego sets](https://sammatt87.github.io/lego_sets_classification)
 Using the rebrickable API to classify Lego sets
 
+## Pre Built Dataset
+### [3d printing anomalies](https://sammatt87.github.io/3d_printing_anomalies)
+Using autoencoders to find issues in 3d printing images
+
 ## [Return Home](https://sammatt87.github.io/)
