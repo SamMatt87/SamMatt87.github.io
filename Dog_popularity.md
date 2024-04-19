@@ -56,26 +56,112 @@ The  American Kennel Club splits dogs into six separate groups based on what the
 
 ### Grooming frequency
 
-Many breeds require regular daily or weekly brushing to maintain a nice coat, others don't need to be brushed outside of the groomers. Some owners may see dogs that require brushing as high maintenance and therefore, they may not be as popular, others may see these sessions as bonding time or relaxing increasing the breeds popularity. The grooming frequency value used in this project rates the level of grooming required from 0.2 to 1 across five categories from `Ocassional Bath/Brush` to `Specialty/Professional`.
+Many breeds require regular daily or weekly brushing to maintain a nice coat, others don't need to be brushed outside of the groomers. Some owners may see dogs that require brushing as high maintenance and therefore, they may not be as popular, others may see these sessions as bonding time or relaxing increasing the breeds popularity. The grooming frequency category used in this project rates the level of grooming required across five categories from `Ocassional Bath/Brush` to `Specialty/Professional`.
 
 ### Shedding
 
-Dogs shed their fur, some breeds more than others. This can be a chore to clean up, especially if the dog gets up on the furniture. Shedding can also trigger allergies and hayfever so some sufferers will want as little shedding as possible. As such, dogs with a higher level of shedding may be less popular. The shedding value used in this project rates the level of shedding between 0.2 and 1 with five categories from `Infrequent` to `Frequent`.
+Dogs shed their fur, some breeds more than others. This can be a chore to clean up, especially if the dog gets up on the furniture. Shedding can also trigger allergies and hayfever so some sufferers will want as little shedding as possible. As such, dogs with a higher level of shedding may be less popular. The shedding category used in this project rates the level of shedding between with five categories from `Infrequent` to `Frequent`.
 
 ### Energy Level
 
-Different breeds require different levels of exercise. For some people, this may effect their busy lifestyle making more energetic dogs less popular. For others, this may be a motivation to get out more leading to more energetic dogs being more popular. The energy level value used in this project rates the energy level of breeds from 0.2 to 1 across five categories from `couch potato` (interestingly, the Basset Hound is the only breed in this category) to `Needs Lots of Activity`.
+Different breeds require different levels of exercise. For some people, this may effect their busy lifestyle making more energetic dogs less popular. For others, this may be a motivation to get out more leading to more energetic dogs being more popular. The energy level category used in this project rates the energy level of breeds across five categories from `couch potato` (interestingly, the Basset Hound is the only breed in this category) to `Needs Lots of Activity`.
 
 ### Trainability
 
-Some breeds are easier to train than others. Owners may just want to train the basics such as potty training or they may want to teach their dogs advanced tricks to show off to friends. Either way, the trainability level may effect a breeds popularity. The trainability value used in this project rates the trainabilty of the breed between 0.2 and 1 across five categories from `May be Stubborn` to `Eager to Please`.
+Some breeds are easier to train than others. Owners may just want to train the basics such as potty training or they may want to teach their dogs advanced tricks to show off to friends. Either way, the trainability level may effect a breeds popularity. The trainability category used in this project rates the trainabilty of the breed across five categories from `May be Stubborn` to `Eager to Please`.
 
 ### Demeanor
 
-The reaction of different breeds to new people can vary. If a breed doesn't react well to new pople it may not be popular. Other breeds may get too excited around new people effecting their popularity. The demeanor value rates the friendliness of the breed towards new people between 0.2 and 1 across five categories from `Aloof/Wary` to `Outgoing`.
+The reaction of different breeds to new people can vary. If a breed doesn't react well to new pople it may not be popular. Other breeds may get too excited around new people effecting their popularity. The demeanor category rates the friendliness of the breed towards new people across five categories from `Aloof/Wary` to `Outgoing`.
 
 ## Preprocessing
 
+For this project, after the data was loaded, it went through a number of steps before being fed into the model. These steps included:
+- Normalising the popularity rank
+- Filtering columns
+- Removing null values
+- Splitting the temperament column
+- One hot encoding the category columns
+- Extract the target values
+
+### Normalising the popularity rank
+
+Normalisation is used in data processing to scale the distribution and make it easier for the model to output results. Given the uniform distribution of the ranks, we simply have to remove any null values, subtract the minimum ranks, then divide by the rank by the max rank to get a uniform distribution between 0 and 1. The code I used to do this can be seen below.
+
+```
+    data = pd.read_csv('akc-data-latest.csv')
+    data = data[data['popularity'].apply(lambda x: str(x).isnumeric())]
+    data['popularity'] = (data['popularity'].astype(int)-min(data['popularity'].astype(int)))/max(data['popularity'].astype(int))
+```
+
+### Filtering columns and removing null values
+
+I do not need to use all the columns provided in this dataset as some of them share the same information in a different way. By providing the dataframe with the list of columns I want to keep, pandas is able to filter the dataframe for me. Once the columns have been filtered, I then remove any rows with null values as there is enough data available to ignore these values. The code I used for this is shown below.
+
+```
+    data_columns = ['name','popularity','temperament','min_height','max_height','min_weight','max_weight','min_expectancy','max_expectancy', 'group', 
+        'grooming_frequency_category', 'shedding_category', 'energy_level_category', 'trainability_category', 'demeanor_category']
+    data = data[data_columns]
+    data = data.dropna()
+```
+
+### Splitting temperaments
+
+The temperaments column is a list of traits separated by commas. I want to create one hot encoding style columns for each trait. To do this, I fed the data into a funciton called `split_temperaments`. This function first cycles through the temperament of each dog to create a complete list of available traits. By splitting each row on the commas, then applying strip to remove unnecessary white space, we can identify the individual traits. The list of traits is then sorted alphabetically and a new list replacing remaining spaces with underscores and adding the prefix `temperament_` is created for column names to easily identify these columns. A new list is then created to hold the attribute lists for each breed. The temperament column is then cycled through again to create a list of binaries for if each breed has a certain trait. This list of binaries is then appended to the main list of attributes mentioned earlier. The attributes list is then converted to a dataframe with a column for each of the 140 traits and using the columns list created earlier for titles. The new dataframe is then merged with the original using the dog name as a key and the combined datafame is returned to the main function. You can see the code for this below.
+
+```
+def split_temperaments(data):
+    temperaments = []
+    for dog in data.temperament:
+        if pd.notna(dog):
+            for attitude in dog.split(','):
+                if attitude.strip() not in temperaments:
+                    temperaments.append(attitude.strip())
+    temperaments.sort()
+    temperament_headings = [f"temperament_{temp.replace(' ', '_').lower()}" for temp in temperaments]
+    temperaments_data = []
+    for dog in data.temperament:
+        if pd.notna(dog):
+            attributes = [attribute.strip() for attribute in dog.split(",")]
+        else:
+            attributes = []
+        breed_temperaments = []
+        for temp in temperaments:
+            breed_temperaments.append(temp in attributes)
+        temperaments_data.append(breed_temperaments)
+    attributes_df = pd.DataFrame(temperaments_data, columns = temperament_headings)
+    attributes_df['name'] = data.name
+    data_out = pd.merge(left=data, right=attributes_df)
+    return data_out
+```
+
+### One Hot Encoding category columns
+
+One Hot Encoding is a data processing technique that splits categorical columns into N (or N-1 depending on how nulls are handled) columns where N is the number of categories. The new columns are binary and have 1 where the category is true and 0 otherwise. Splitting a column this way makes the data easier to understand by the model, especially whent the categories may be numeric but not on a scale. It is good practice to do this even when the categories are not numeric. For this project, this was done for the following categories:
+- Group
+- Grooming fequency
+- Shedding
+- Energy level
+- Trainability
+- Demeanor
+
+The pandas function `get_dummies` easily splits colums this way. I added a prefix to each column of `category_` and the category name to make the columns identifiable. As I had to do this for multiple columns I created the function below to make the process easily repeatable.
+
+```
+def one_hot_encoding(data, column):
+    dummies = pd.get_dummies(data, columns=[column], prefix=[f'category_{column}'])
+    return dummies
+```
+
+### Extract target values
+
+The final step in the preprocessing was to extract the popularity target values and drop any columns no longer being used. The code for this is shown below.
+
+```
+    targets = variables['popularity']
+    variables = variables.drop(['name','popularity'], axis=1)
+    return data, variables, targets
+```
 
 ## Data Exploration
 
