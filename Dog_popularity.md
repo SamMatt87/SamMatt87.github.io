@@ -165,6 +165,77 @@ The final step in the preprocessing was to extract the popularity target values 
 
 ## Data Exploration
 
+Before building the model, I wanted to explore the data some more to gather insights and see how some of the variables might relate to each other. I generated a number of graphs including pie caharts, line graphs and matrices for a number of different variables and will go into greater detail in this section.
+
+### Expectancy line graph
+
+As mentioned earlier, some owners, especially those who have lost a dog in the past, may prefer a dog with a longer life expectancy. The data provided lists both a minimum and maximum life expetancy for each breed. To graph the results, I binned both of these categories for every full year using the pandas `value_counts` funcion, finding the number of dogs with a minimum or maximum expectancy for each year then using `sort_index` to get the years in order. I then plot both results on a single graph using the `right` value for each key to find the maximum of the binned range for the x value and the number of breeds for the y value. I then used numpy to create a range for the x labels and displayed a legend for each line. The plot was then saved to be referenced agian in the future. As I would be doing similar analyses for the breeds height and weight, I created the function `generate_line_graphs` for modularity. The code for this function can be seen below.
+
+```
+def generate_line_graphs(data, category, jump):
+    top = int(max(data[f'max_{category}'])+1)
+    min_results = data[data[f'min_{category}'].notnull()][f'min_{category}'].value_counts(bins = range(0,top, jump)).sort_index()
+    max_results = data[data[f'max_{category}'].notnull()][f'max_{category}'].value_counts(bins = range(0,top, jump)).sort_index()
+    plt.cla()
+    plt.plot(max_results.keys().right, min_results.values, label=f'min_{category}')
+    plt.plot(max_results.keys().right, max_results.values, label=f'max_{category}')
+    plt.xticks(np.arange(0,top,jump))
+    plt.legend()
+    plt.savefig(f'{category}_plot.pdf')
+generate_line_graphs(variables, 'expectancy', 1)
+```
+
+When looking at the output as shown below both the minimum and maximum expectancies appear to follow a bimodal distribution with the local maxima for the minimum expectancy at 10 and 12 years while the local maxima for the maximum life expectancy is at 12 and 15 years. We can also see that the minimums range from 5 to 15 years while the maximums range from 8 to 17 years. 
+
+### Weight and height line graphs
+
+Weight and height are used to measuere a dogs size. Apartments are more suited to smaller dogs while others may prefer a larger breed. Due to the large variation in sizes, I binned the height categories by 10 cm and the weight categories by 10 kg. I ran each of them through the previously mentioned `generate_line_graphs` function using the code below.
+
+```
+    generate_line_graphs(variables, 'height', 10)
+    generate_line_graphs(variables, 'weight', 10)
+```
+
+From the weight plot, shown below, we can see what looks like a mix between and exponential and multimodal distribution with a spike at the 30kg mark for minimum and 40 kg mark for maximum. We can use these spikes to classify dogs into size categories with dogs with a minimum below 20kg as small/medium while dogs above 20 kg for minimum weight are large. This seems to reflect the general consensus among dog owners.
+
+
+
+The height plot, shown below, follows a multimodal distribution with local maxima for minimum height at 30 and 60 cm tall and maximum height at 40 and 70 cm tall. Using these distributions, we can once again add a split to differentiate between small and large breeds at 40cm for the minimum height and 50cm for the maximum height.
+
+
+
+### Category pie charts
+
+I generated pie charts for each of the categories that I will split into one hot encoded columns to analyse their distrubution. As I was doing this for multiple columns I created the function `generate_pie` to perform this task. The function clears the plot with `cla`, generates the counts for each category using `value_counts` and plots them on a pie chart, then saves the plot to a file using `savefig` for future reference. This was performed on the raw data as it was easier before the one hot encoding split. The code for the function can be seen below.
+
+```
+def generate_pie(data, category):
+    plt.cla()
+    data[category].value_counts(dropna=True).plot.pie(title=category, ylabel='')
+    plt.savefig(f'{category}_pie.pdf')
+```
+
+For group, there seems to be a fairly even spread across all the group categories as shown below. This uniform grouping could be helpfel to the model depending on where each breed ends up.
+
+
+
+The most common grooming frequency category as shown in the chart below is `weekly brushing`. This is the second most intense brushing category. The catory on each side with regards to intensity `occasional brush/bath` and `3 timees a week brushing` are the next highest with `daily brushing` and `specialty/professional` only taking up a small percent each.
+
+
+
+For the shedding categories, almost half the breeds fall into the `seasonal` category, the second lowest category. The `frequent` category that indicates the highest level of shedding only takes up a small percentage and the rest of the breeds are fairly uniformly split between the last three categories as shown below.
+
+
+
+The vast majority of the breeds fall into the top three energy level categories with almost half being classified as `regular exercise`. This then decreases for the next two categories of `energetic` and even further for `needs lots of activity`. Only a small percentage fall under `calm` and `couch potato` which, as mentioned earlier, only contains one breed. You can see the chart below.
+
+
+
+The two largest trainability categories are the two middle of the road categories of `agreeable` and `independent`. The percentage then decreases for `eager to please`, `easy training` and `may be stubborn`. You can see the chart for this below.
+
+
+
+The most common demeanor categories are also the three middle ones `friendly`, `alert/reponsive` and `friendly`. You can see the chart below.
 
 ## The Model
 
