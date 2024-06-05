@@ -237,7 +237,183 @@ The two largest trainability categories are the two middle of the road categorie
 
 The most common demeanor categories are also the three middle ones `friendly`, `alert/reponsive` and `friendly`. You can see the chart below.
 
+
+
+
+### Relationship Matrices
+
+I wanted to see if there were any relationsips across two diferent variable types, the temperaments and across the categories such as group, grooming frequency, shedding, energy level, trainability and demeanor. To do this I created matrices to show the number of breeds in one category that appear in a second category both as a number and as an overall percentage of the number of second category instances. This involved creating two functions, `category_counts` to return the counts and percentages as numpy arrays and `generate_matrix` to convert these arrays to graphs. The category_counts function is fed the data and the string representing the start of the columns for the category. The data is filtered to have only these category columns then for each column we filter for rows where it has a value other than zero and sum up the values of the other columns. The column itself is set to zero so that the diagonal values are all zero. To find the percentage, these numbers are divided by the length of th filtered dataset. These two arrays are appended to their own lists and once all columns have been recorded, the lists are converted to arrays and returned along with the column names for labelling purposes. the code for `category_counts` is shown below.
+
+```
+def category_counts(data, category):
+    category_data = data.filter(regex=f'{category}_')
+    category_counts = []
+    category_percentages = []
+    for column in range(len(category_data.columns)):
+        single_category = category_data[category_data[category_data.columns[column]]==True]
+        category_count = single_category.sum().values
+        category_count[column] = 0
+        category_counts.append(category_count)
+        if single_category.shape[0] == 0:
+            category_percentages.append(np.zeros_like(category_count))
+        else:
+            category_percentages.append(category_count/single_category.shape[0])
+    category_counts = np.asarray(category_counts)
+    category_percentages = np.asarray(category_percentages)
+    return category_counts, category_percentages, category_data.columns
+```
+
+The `generate_matrix` function converts these numpy arrays to graphs. It takes in the numpy array, the list of columns and a string for the filename to save the image to. I started by defining the ticks as a range from 0 to the number of columns which will be used later to make sure every category is represented in the labels. I then set the figure size and added a subplot to ensure the figure was large enough to see all the labels. The matshow function of pyplot is used to convert a 2D numpy array to a coloured matrix. I set the axis major locator to show every label and used the set_ticks functions to assign the columns to the ticks using the range I defined earlier rotating the x axis by 90 degrees so they didn't run into each other. I assigned a colorbar as a legend to the right side of the graph and saved the result to examine. You can see the code for this below.
+
+```
+def generate_matrix(data, columns, filename):
+    ticks = range(0, len(columns))
+    fig = plt.figure(figsize=(28,28))
+    ax = fig.add_subplot(111)
+    cax = ax.matshow(data)
+    ax.xaxis.set_major_locator(MultipleLocator(1))
+    ax.yaxis.set_major_locator(MultipleLocator(1))
+    ax.set_xticks(ticks, columns)
+    ax.set_yticks(ticks, columns)
+    ax.tick_params(axis='x', labelrotation=90)
+    fig.colorbar(cax)
+    plt.savefig(filename)
+```
+
+Starting with the demeanors going by overall count, you can see in the mtrix below that the main connection that sticks out is the combination of `loyal` and `affectionate` as these are the only two yellow squares in the matrrix, there is also the obvious combination of `smart` and `confident` as well as `curious` and `alert` among others.
+
+
+
+More connections become visible when we look at percentages rather than overall counts as seen in the matrix below. We see many more yellow points where almost all the breeds with one quality are also given the other. Once more, we have obvious ones like `devoted` and `friendly` along with less obvious pairings like `low key` and `charming`.
+
+
+
+
+Looking at the overall count of crossover between the six categories, as hown below, we can see a number of relationships that stand out. The most obvious link, being the only yellow points being the link between `weekly brushing` and `seasonal shedding` which makes sense. The `weekly brushing` grooming category also has some other links that stand out including with the `regular exercise` training category and the `friendly` demeanor.
+
+
+
+More relationships come into view when we see this matrix by percentage rather than overall count. One example of a new link is between the `specialty/professional` grooming category and the `regular exercise` training category. This link may be a red herring though due to the small size of this grooming category. We also see yellow squares across the `couch potato` energy level category since, as mentioned earlier, there is only one breed in this category.
+
+
+
 ## The Model
+
+For this model, I used an XGBoost Regressor. XGBoost or Extreme Gradient Boosting is an ensemble method where decision trees are generated in parallel using gradient boosting to improve upon previous generations. The first step of this model was to retrieve the data and split it into a train and test set. The data has already been provided by the code in the preprocessing section, then I used the `train_test_split` funciton from sklearn to split the data and the target outputs. I wanted to test multiple models with different parameters so I then constructed two dictionaries where the number of estimators would be the key and the values would be a list of error rates for each depth. Estimators in this case refers to the number of trees built, more trees would lead to more accurate results but at a certain point you may risk diminishing returns where the model takes longer to build due to the number of trees and the larger models only improve the accuracy by an insignificant amount. Depth refers to the maximum number of levels in the decision trees, like with the number of estimators, more levels can lead to greater accuracy on the training set but also results in more complex trees that take longer to build and may be overfit on the training data.
+
+For the estimators, I wanted to test relatively low numbers against relatively high numbers so I ran code for estimators from 1 to 20 as well as the hundreds from 100 to 500. Cycling through these numbers and the max depth from 1 to 10, I ran each XGBoostRegressor model with the assigned estimators and depth and setting the device to `gpu` to speed up the process building the trees in parallel. I would then fit the model to the training data and save each as a json file using the number of estimators and depth in the filename. After using predict to generate the predictions for each set of data, I used the `mean` numpy function to fund the root mean squared error for each combination of estimators and depth. I recorded these results and saved them to graphs to find the ideal case of estimators and depth. Due to the risk of overfitting, I focused mainly on the test results rather than the train results. You can see the code and graphs for this section below.
+
+```
+def model():
+    _, variables, targets = preprocess()
+    train_variables, test_variables, train_targets, test_targets = train_test_split(variables, targets, test_size=0.2, random_state=77)
+    train_errors = {}
+    test_errors = {}
+    for estimators in [#1,2,3,4,5,6,7,8,9,10,
+                       #11,12,13,14,15,16,17,18,19,20,
+                       100,200,300,400,500
+                       ]:
+        estimator_train_errors = []
+        estimator_test_errors = []
+        for depth in range(1,11):
+            xgb = XGBRegressor(n_estimators = estimators, max_depth = depth, device = 'gpu')
+            xgb.fit(train_variables, train_targets)
+            xgb.save_model(f'estimators_{estimators}_depth_{depth}.json')
+            train_predictions = xgb.predict(train_variables)
+            predictions = xgb.predict(test_variables)
+            train_rmse = np.mean(((train_targets-train_predictions)**2))**0.5
+            rmse = np.mean(((test_targets-predictions)**2))**0.5
+            estimator_train_errors.append(train_rmse)
+            estimator_test_errors.append(rmse)
+        train_errors[estimators] = estimator_train_errors
+        test_errors[estimators] = estimator_test_errors
+    for k, v in train_errors.items():
+        plt.plot(range(1,11), v, label = k)
+    plt.legend()
+    plt.savefig("train_rmse_hundreds.pdf")
+    plt.cla()
+    for k, v in test_errors.items():
+        plt.plot(range(1,11), v, label = k)
+    plt.legend()
+    plt.savefig("test_rmse_hundreds.pdf")
+```
+
 
 
 ## The Results
+From the graphs in the previous section, we can see that the best performing model is with 7 estimators at a max depth of 4. By loading the details in the json file for this model using `load_model` I can use `plot_tree` to visualise each of the 13 estimators. I saved these as pdfs with a high number of dots per inch to be able to examine each of these trees individually. You can see the code for this section below along with each of the trees.
+
+```
+from xgboost import XGBRegressor, plot_tree, plot_importance
+from matplotlib import pyplot as plt
+
+xgb = XGBRegressor()
+xgb.load_model("estimators_7_depth_4.json")
+for trees in range(0,13):
+    plt.cla()
+    plot_tree(xgb,num_trees= trees)
+    plt.savefig(f'xgb_tree_{trees}.pdf', dpi = 300)
+```
+
+
+
+I then used the `plot_importance` function to find the importance of each variable by weight and gain. plotting the importance by weight shows us the importance based on the number of times a variable was used in the trees. By contrast, plotting by gain shows the importance by the average split whenever the variable is used. Both of these methods give important insights into the importance of each variable. I increased the figure size for these plots and moved the left side of the plot to accomodate for the length of some of the variable names. Due to the large number of variables, I only wanted to see the top 10 of each importance type so i set `max_num_features` to 10, I also set `height` to 1 to fill out the plots. You can see the code for this section and the resulting plots below.
+
+```
+figure = plt.figure(figsize=[20,10])
+ax = figure.add_subplot(111)
+figure.subplots_adjust(left=0.3)
+plot_importance(xgb, height=1, ax=ax, max_num_features=10,importance_type="weight")
+plt.savefig("weight_importance.pdf")
+
+figure = plt.figure(figsize=[20,10])
+ax = figure.add_subplot(111)
+figure.subplots_adjust(left=0.3)
+plot_importance(xgb, height=1, ax=ax, max_num_features=10,importance_type="gain")
+plt.savefig("gain_importance.pdf")
+```
+
+
+
+Each of the plots above reveals a different set of important variables. For example, the plot based on weight shows that the minimum height being used 11 times across the trees followed by the maximum expectancy at 10 and the minimum weight at 9. The plot for the gain importance however leads with the independent training category followed by breeds in the hound group and breeds with a devoted temperament.
+
+As a final insight, I wanted to compare the predicted dog popularity to the actual popularity for the top 10 dogs. To do this, I gathered the data from the preprocessing step and ran them through the model again to find their prdictions. I then created a function which multiplied the input by the number of breeds and added 1 to reverse the normalisation process using on the prediciton outputs and the target values. After that, I extracted the name for each breed from the data so that the reader would know the rank of each dog breed. I then combined the name, predicted output and initial rank into a dictionary that I converted into a dataframe. I sorted this dataframe by the prediction output and added a new column with a range starting from 1 to identify the order of the output. I also added a final column of the target rank minus the predicted rank to see the change in the rank postintions and printed the output to the console. You can see the code for this section and the output below.
+
+```
+data, variables, targets = preprocess()
+predictions = xgb.predict(variables)
+def reverse_normalistion(rank):
+    rank = rank*192
+    rank = rank + 1
+    return rank
+
+prediction_output = reverse_normalistion(predictions, data)
+targets_rank = reverse_normalistion(targets, data)
+names = data['name']
+results_dict = {'name':names,'prediction_output': prediction_output, 'target_rank':targets_rank}
+results_df = pd.DataFrame(results_dict, index=None)
+results_df = results_df.sort_values(by=['prediction_output'], ignore_index=True)
+results_df['predicted_rank'] = range(1,len(prediction_output)+1)
+results_df['difference'] = results_df['target_rank'] - results_df['predicted_rank']
+print(results_df.head(10))
+```
+
+```
+                         name  prediction_output  target_rank  predicted_rank  difference
+0           Yorkshire Terrier          31.959652         10.0               1         9.0
+1                Poodle (Toy)          33.634834          7.0               2         5.0
+2                     Bulldog          38.312851          5.0               3         2.0
+3        Bernese Mountain Dog          38.792618         22.0               4        18.0
+4  German Shorthaired Pointer          39.763603          9.0               5         4.0
+5         German Shepherd Dog          39.763603          2.0               6        -4.0
+6          Labrador Retriever          39.763603          1.0               7        -6.0
+7              Boston Terrier          43.680702         21.0               8        13.0
+8                    Brittany          45.223763         26.0               9        17.0
+9                Newfoundland          46.284470         40.0              10        30.0
+```
+
+ Looking at the top 10, 6 of the 10 are still within the top 10 and the majority of the breeds (with the exception of the Newfoundland) moved less than 20 places which is about 10% of the total breeds. Using numpy to output statistics using `mean` and `median` as well as `abs` to convert the differences to all positve values, we find the mean of the differences is around 26.3 and the median is 20. The median being lower than the mean in this case suggests that most breeds have a difference score lower than the average and it is only a smaller number of breeds have a high difference dragging the average up.
+
+ If you would like to learn more about this project, the repository is available at []
+ 
+ ## [Return Home](https://sammatt87.github.io/)
