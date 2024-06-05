@@ -187,6 +187,8 @@ generate_line_graphs(variables, 'expectancy', 1)
 
 When looking at the output as shown below both the minimum and maximum expectancies appear to follow a bimodal distribution with the local maxima for the minimum expectancy at 10 and 12 years while the local maxima for the maximum life expectancy is at 12 and 15 years. We can also see that the minimums range from 5 to 15 years while the maximums range from 8 to 17 years. 
 
+![expectancy_plot](https://github.com/SamMatt87/SamMatt87.github.io/assets/18587666/d5e899a4-a450-4c7e-a1c9-b536781a66e6)
+
 ### Weight and height line graphs
 
 Weight and height are used to measuere a dogs size. Apartments are more suited to smaller dogs while others may prefer a larger breed. Due to the large variation in sizes, I binned the height categories by 10 cm and the weight categories by 10 kg. I ran each of them through the previously mentioned `generate_line_graphs` function using the code below.
@@ -198,11 +200,11 @@ Weight and height are used to measuere a dogs size. Apartments are more suited t
 
 From the weight plot, shown below, we can see what looks like a mix between and exponential and multimodal distribution with a spike at the 30kg mark for minimum and 40 kg mark for maximum. We can use these spikes to classify dogs into size categories with dogs with a minimum below 20kg as small/medium while dogs above 20 kg for minimum weight are large. This seems to reflect the general consensus among dog owners.
 
-
+![weight_plot](https://github.com/SamMatt87/SamMatt87.github.io/assets/18587666/75c9fdfd-67d9-4d7f-bc61-eac8d4d974c1)
 
 The height plot, shown below, follows a multimodal distribution with local maxima for minimum height at 30 and 60 cm tall and maximum height at 40 and 70 cm tall. Using these distributions, we can once again add a split to differentiate between small and large breeds at 40cm for the minimum height and 50cm for the maximum height.
 
-
+![height_plot](https://github.com/SamMatt87/SamMatt87.github.io/assets/18587666/116ac60a-c790-4326-be8e-1cf01251f20b)
 
 ### Category pie charts
 
@@ -217,28 +219,27 @@ def generate_pie(data, category):
 
 For group, there seems to be a fairly even spread across all the group categories as shown below. This uniform grouping could be helpfel to the model depending on where each breed ends up.
 
-
+![group_pie](https://github.com/SamMatt87/SamMatt87.github.io/assets/18587666/04c5b6af-ed81-4ecd-92c9-35e6420b2e4b)
 
 The most common grooming frequency category as shown in the chart below is `weekly brushing`. This is the second most intense brushing category. The catory on each side with regards to intensity `occasional brush/bath` and `3 timees a week brushing` are the next highest with `daily brushing` and `specialty/professional` only taking up a small percent each.
 
-
+![grooming_frequency_category_pie](https://github.com/SamMatt87/SamMatt87.github.io/assets/18587666/5b0e4dd1-a8af-49ab-899e-9fa3cc1d4970)
 
 For the shedding categories, almost half the breeds fall into the `seasonal` category, the second lowest category. The `frequent` category that indicates the highest level of shedding only takes up a small percentage and the rest of the breeds are fairly uniformly split between the last three categories as shown below.
 
-
+![shedding_category_pie](https://github.com/SamMatt87/SamMatt87.github.io/assets/18587666/876b41b4-6002-42cb-a866-1e4e312fa8f2)
 
 The vast majority of the breeds fall into the top three energy level categories with almost half being classified as `regular exercise`. This then decreases for the next two categories of `energetic` and even further for `needs lots of activity`. Only a small percentage fall under `calm` and `couch potato` which, as mentioned earlier, only contains one breed. You can see the chart below.
 
-
+![energy_level_category_pie](https://github.com/SamMatt87/SamMatt87.github.io/assets/18587666/49206ae8-998a-467e-9751-199fd2be019b)
 
 The two largest trainability categories are the two middle of the road categories of `agreeable` and `independent`. The percentage then decreases for `eager to please`, `easy training` and `may be stubborn`. You can see the chart for this below.
 
-
+![trainability_category_pie](https://github.com/SamMatt87/SamMatt87.github.io/assets/18587666/2bf3e7b5-c5b9-4470-9dba-10d3781d81d5)
 
 The most common demeanor categories are also the three middle ones `friendly`, `alert/reponsive` and `friendly`. You can see the chart below.
 
-
-
+![demeanor_category_pie](https://github.com/SamMatt87/SamMatt87.github.io/assets/18587666/6c6953ed-7e31-481b-825b-5a18aa43606c)
 
 ### Relationship Matrices
 
