@@ -414,6 +414,6 @@ print(results_df.head(10))
 
  Looking at the top 10, 6 of the 10 are still within the top 10 and the majority of the breeds (with the exception of the Newfoundland) moved less than 20 places which is about 10% of the total breeds. Using numpy to output statistics using `mean` and `median` as well as `abs` to convert the differences to all positve values, we find the mean of the differences is around 26.3 and the median is 20. The median being lower than the mean in this case suggests that most breeds have a difference score lower than the average and it is only a smaller number of breeds have a high difference dragging the average up.
 
- If you would like to learn more about this project, the repository is available at []
+ If you would like to learn more about this project, the repository is available at [https://github.com/SamMatt87/dog_popularity].
  
- ## [Return Home](https://sammatt87.github.io/)
+## [Return Home](https://sammatt87.github.io/)
