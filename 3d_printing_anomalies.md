@@ -684,7 +684,7 @@ An example of the images alongside the heatmaps is shown below. We can see examp
 
 ![21-02-2024-10-45-33](https://github.com/SamMatt87/SamMatt87.github.io/assets/18587666/9f9111cb-84f0-4f38-a05b-5947e02638ba)
 
-If you would like to dive more into this project, the code is available at https://github.com/SamMatt87/3d-printing-anomalies.
+If you would like to dive more into this project, the code is available at [https://github.com/SamMatt87/3d-printing-anomalies].
 
 
 ## [Return Home](https://sammatt87.github.io/)
