@@ -187,6 +187,8 @@ generate_line_graphs(variables, 'expectancy', 1)
 
 When looking at the output as shown below both the minimum and maximum expectancies appear to follow a bimodal distribution with the local maxima for the minimum expectancy at 10 and 12 years while the local maxima for the maximum life expectancy is at 12 and 15 years. We can also see that the minimums range from 5 to 15 years while the maximums range from 8 to 17 years. 
 
+![expectancy_plot](https://github.com/SamMatt87/SamMatt87.github.io/assets/18587666/d5e899a4-a450-4c7e-a1c9-b536781a66e6)
+
 ### Weight and height line graphs
 
 Weight and height are used to measuere a dogs size. Apartments are more suited to smaller dogs while others may prefer a larger breed. Due to the large variation in sizes, I binned the height categories by 10 cm and the weight categories by 10 kg. I ran each of them through the previously mentioned `generate_line_graphs` function using the code below.
@@ -198,11 +200,11 @@ Weight and height are used to measuere a dogs size. Apartments are more suited t
 
 From the weight plot, shown below, we can see what looks like a mix between and exponential and multimodal distribution with a spike at the 30kg mark for minimum and 40 kg mark for maximum. We can use these spikes to classify dogs into size categories with dogs with a minimum below 20kg as small/medium while dogs above 20 kg for minimum weight are large. This seems to reflect the general consensus among dog owners.
 
-
+![weight_plot](https://github.com/SamMatt87/SamMatt87.github.io/assets/18587666/75c9fdfd-67d9-4d7f-bc61-eac8d4d974c1)
 
 The height plot, shown below, follows a multimodal distribution with local maxima for minimum height at 30 and 60 cm tall and maximum height at 40 and 70 cm tall. Using these distributions, we can once again add a split to differentiate between small and large breeds at 40cm for the minimum height and 50cm for the maximum height.
 
-
+![height_plot](https://github.com/SamMatt87/SamMatt87.github.io/assets/18587666/116ac60a-c790-4326-be8e-1cf01251f20b)
 
 ### Category pie charts
 
@@ -217,28 +219,27 @@ def generate_pie(data, category):
 
 For group, there seems to be a fairly even spread across all the group categories as shown below. This uniform grouping could be helpfel to the model depending on where each breed ends up.
 
-
+![group_pie](https://github.com/SamMatt87/SamMatt87.github.io/assets/18587666/04c5b6af-ed81-4ecd-92c9-35e6420b2e4b)
 
 The most common grooming frequency category as shown in the chart below is `weekly brushing`. This is the second most intense brushing category. The catory on each side with regards to intensity `occasional brush/bath` and `3 timees a week brushing` are the next highest with `daily brushing` and `specialty/professional` only taking up a small percent each.
 
-
+![grooming_frequency_category_pie](https://github.com/SamMatt87/SamMatt87.github.io/assets/18587666/5b0e4dd1-a8af-49ab-899e-9fa3cc1d4970)
 
 For the shedding categories, almost half the breeds fall into the `seasonal` category, the second lowest category. The `frequent` category that indicates the highest level of shedding only takes up a small percentage and the rest of the breeds are fairly uniformly split between the last three categories as shown below.
 
-
+![shedding_category_pie](https://github.com/SamMatt87/SamMatt87.github.io/assets/18587666/876b41b4-6002-42cb-a866-1e4e312fa8f2)
 
 The vast majority of the breeds fall into the top three energy level categories with almost half being classified as `regular exercise`. This then decreases for the next two categories of `energetic` and even further for `needs lots of activity`. Only a small percentage fall under `calm` and `couch potato` which, as mentioned earlier, only contains one breed. You can see the chart below.
 
-
+![energy_level_category_pie](https://github.com/SamMatt87/SamMatt87.github.io/assets/18587666/49206ae8-998a-467e-9751-199fd2be019b)
 
 The two largest trainability categories are the two middle of the road categories of `agreeable` and `independent`. The percentage then decreases for `eager to please`, `easy training` and `may be stubborn`. You can see the chart for this below.
 
-
+![trainability_category_pie](https://github.com/SamMatt87/SamMatt87.github.io/assets/18587666/2bf3e7b5-c5b9-4470-9dba-10d3781d81d5)
 
 The most common demeanor categories are also the three middle ones `friendly`, `alert/reponsive` and `friendly`. You can see the chart below.
 
-
-
+![demeanor_category_pie](https://github.com/SamMatt87/SamMatt87.github.io/assets/18587666/6c6953ed-7e31-481b-825b-5a18aa43606c)
 
 ### Relationship Matrices
 
@@ -282,20 +283,19 @@ def generate_matrix(data, columns, filename):
 
 Starting with the demeanors going by overall count, you can see in the mtrix below that the main connection that sticks out is the combination of `loyal` and `affectionate` as these are the only two yellow squares in the matrrix, there is also the obvious combination of `smart` and `confident` as well as `curious` and `alert` among others.
 
-
+![category_matrix](https://github.com/SamMatt87/SamMatt87.github.io/assets/18587666/2f0cf638-94f4-455c-b96f-d51e3a94d97b)
 
 More connections become visible when we look at percentages rather than overall counts as seen in the matrix below. We see many more yellow points where almost all the breeds with one quality are also given the other. Once more, we have obvious ones like `devoted` and `friendly` along with less obvious pairings like `low key` and `charming`.
 
-
-
+![percentage_matrix](https://github.com/SamMatt87/SamMatt87.github.io/assets/18587666/65be86bf-8333-4049-b741-ce05e54e96bb)
 
 Looking at the overall count of crossover between the six categories, as hown below, we can see a number of relationships that stand out. The most obvious link, being the only yellow points being the link between `weekly brushing` and `seasonal shedding` which makes sense. The `weekly brushing` grooming category also has some other links that stand out including with the `regular exercise` training category and the `friendly` demeanor.
 
-
+![category_matrix_2](https://github.com/SamMatt87/SamMatt87.github.io/assets/18587666/e3e142a9-4c9b-470d-be08-4d4578d2e7e2)
 
 More relationships come into view when we see this matrix by percentage rather than overall count. One example of a new link is between the `specialty/professional` grooming category and the `regular exercise` training category. This link may be a red herring though due to the small size of this grooming category. We also see yellow squares across the `couch potato` energy level category since, as mentioned earlier, there is only one breed in this category.
 
-
+![percentage_matrix_2](https://github.com/SamMatt87/SamMatt87.github.io/assets/18587666/ad2d20cf-d7cb-4370-83c6-2951800ce193)
 
 ## The Model
 
@@ -338,7 +338,23 @@ def model():
     plt.savefig("test_rmse_hundreds.pdf")
 ```
 
+![train_rmse_ones](https://github.com/SamMatt87/SamMatt87.github.io/assets/18587666/9feeff14-5d13-46f2-876b-9195e5cba389)
+Training data 1-10 estimators
 
+![test_rmse_ones](https://github.com/SamMatt87/SamMatt87.github.io/assets/18587666/3f9a8899-2049-496f-9128-1344e82b6509)
+Test data 1-10 estimators
+
+![train_rmse_teens](https://github.com/SamMatt87/SamMatt87.github.io/assets/18587666/02995310-c555-4f99-9e14-2e12d3dfd4f9)
+Training data 11-20 estimators
+
+![test_rmse_teens](https://github.com/SamMatt87/SamMatt87.github.io/assets/18587666/b47806a6-75a2-4cd8-9f0b-9b35deb8efcb)
+Test data 11-20 estimators
+
+![train_rmse_hundreds](https://github.com/SamMatt87/SamMatt87.github.io/assets/18587666/3ebc9f9d-e885-462f-8d32-7cc3b6f42167)
+Training data 100-500 estimators
+
+![test_rmse_hundreds](https://github.com/SamMatt87/SamMatt87.github.io/assets/18587666/da2a2476-b5db-48af-a148-134d638346f6)
+Test data 100-500 estimators
 
 ## The Results
 From the graphs in the previous section, we can see that the best performing model is with 7 estimators at a max depth of 4. By loading the details in the json file for this model using `load_model` I can use `plot_tree` to visualise each of the 13 estimators. I saved these as pdfs with a high number of dots per inch to be able to examine each of these trees individually. You can see the code for this section below along with each of the trees.
@@ -355,7 +371,26 @@ for trees in range(0,13):
     plt.savefig(f'xgb_tree_{trees}.pdf', dpi = 300)
 ```
 
+![xgb_tree_0](https://github.com/SamMatt87/SamMatt87.github.io/assets/18587666/0cb37bc2-11ce-49e7-bfe2-6ed999cb351a)
+tree 0
 
+![xgb_tree_1](https://github.com/SamMatt87/SamMatt87.github.io/assets/18587666/eacf7b78-af4f-4b77-b14e-5e772a569474)
+tree 1
+
+![xgb_tree_2](https://github.com/SamMatt87/SamMatt87.github.io/assets/18587666/5e752120-0d51-4d34-b752-ddeaad8a909a)
+tree 2
+
+![xgb_tree_3](https://github.com/SamMatt87/SamMatt87.github.io/assets/18587666/cf3267af-f9c6-4874-a92b-39676ee1a85f)
+tree 3
+
+![xgb_tree_4](https://github.com/SamMatt87/SamMatt87.github.io/assets/18587666/bab2a413-0cef-478b-af52-00814ef49dce)
+tree 4
+
+![xgb_tree_5](https://github.com/SamMatt87/SamMatt87.github.io/assets/18587666/2ec7cc82-2d16-4cf1-bc90-16db97e25dc6)
+tree 5
+
+![xgb_tree_6](https://github.com/SamMatt87/SamMatt87.github.io/assets/18587666/48f19df9-74ec-4ab7-a90f-b74f8804b0d4)
+tree 6
 
 I then used the `plot_importance` function to find the importance of each variable by weight and gain. plotting the importance by weight shows us the importance based on the number of times a variable was used in the trees. By contrast, plotting by gain shows the importance by the average split whenever the variable is used. Both of these methods give important insights into the importance of each variable. I increased the figure size for these plots and moved the left side of the plot to accomodate for the length of some of the variable names. Due to the large number of variables, I only wanted to see the top 10 of each importance type so i set `max_num_features` to 10, I also set `height` to 1 to fill out the plots. You can see the code for this section and the resulting plots below.
 
@@ -373,6 +408,11 @@ plot_importance(xgb, height=1, ax=ax, max_num_features=10,importance_type="gain"
 plt.savefig("gain_importance.pdf")
 ```
 
+![gain_importance](https://github.com/SamMatt87/SamMatt87.github.io/assets/18587666/5e7d9dd3-8a20-4cb4-aa04-a97536c4a33a)
+importance by gain
+
+![weight_importance](https://github.com/SamMatt87/SamMatt87.github.io/assets/18587666/19fcba46-bb72-4e0d-99f1-afd61da789dc)
+importance by weight
 
 
 Each of the plots above reveals a different set of important variables. For example, the plot based on weight shows that the minimum height being used 11 times across the trees followed by the maximum expectancy at 10 and the minimum weight at 9. The plot for the gain importance however leads with the independent training category followed by breeds in the hound group and breeds with a devoted temperament.
@@ -412,7 +452,7 @@ print(results_df.head(10))
 9                Newfoundland          46.284470         40.0              10        30.0
 ```
 
- Looking at the top 10, 6 of the 10 are still within the top 10 and the majority of the breeds (with the exception of the Newfoundland) moved less than 20 places which is about 10% of the total breeds. Using numpy to output statistics using `mean` and `median` as well as `abs` to convert the differences to all positve values, we find the mean of the differences is around 26.3 and the median is 20. The median being lower than the mean in this case suggests that most breeds have a difference score lower than the average and it is only a smaller number of breeds have a high difference dragging the average up.
+ Looking at the top 10, 6 of the 10 are still within the top 10 and the majority of the breeds (with the exception of the Newfoundland) moved less than 20 places which is about 10% of the total breeds. Using numpy to output statistics using `mean` and `median` as well as `abs` to convert the differences to all positive values, we find the mean of the differences is around 26.3 and the median is 20. The median being lower than the mean in this case suggests that most breeds have a difference score lower than the average and it is only a smaller number of breeds have a high difference dragging the average up.
 
  If you would like to learn more about this project, the repository is available at [https://github.com/SamMatt87/dog_popularity].
  
