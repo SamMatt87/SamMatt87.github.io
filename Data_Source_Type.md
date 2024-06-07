@@ -19,4 +19,8 @@ Using the rebrickable API to classify Lego sets
 ### [3d printing anomalies](https://sammatt87.github.io/3d_printing_anomalies)
 Using autoencoders to find issues in 3d printing images
 
+## CSV
+### [Dog popularity](https://sammatt87.github.io/Dog_popularity)
+Using XGBoost to classify the popularity of dog breeds based on American Kennel Club data
+
 ## [Return Home](https://sammatt87.github.io/)
