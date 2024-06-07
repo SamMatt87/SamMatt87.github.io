@@ -15,7 +15,7 @@ Extracting useful information from job boards for customisable resumes
 ### [Lego sets](https://sammatt87.github.io/lego_sets_classification)
 Using the rebrickable API to classify Lego sets
 
-### [Dog popularity](https://sammatt87.github.io/Dog_popularity)
+### [Dog popularity](https://sammatt87.github.io/dog_popularity)
 Using XGBoost to classify the popularity of dog breeds based on American Kennel Club data
 
 ## Image Data
